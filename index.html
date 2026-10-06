@@ -1,0 +1,2146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mattera Systems · Mide tus horas</title>
+<meta name="description" content="Mide cuántas horas al año se van en trabajo repetitivo. Mattera Systems construye los sistemas con IA que te las devuelven.">
+<link rel="canonical" href="https://demo.matterasystems.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mattera Systems">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://demo.matterasystems.com/">
+<meta property="og:title" content="Mattera Systems · Mide tus horas">
+<meta property="og:description" content="Mide cuántas horas al año se van en trabajo repetitivo. Mattera Systems construye los sistemas con IA que te las devuelven.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:url" content="https://demo.matterasystems.com/">
+<meta name="twitter:title" content="Mattera Systems · Mide tus horas">
+<meta name="twitter:description" content="Mide cuántas horas al año se van en trabajo repetitivo. Mattera Systems construye los sistemas con IA que te las devuelven.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bosque:#0C211B; --alterno:#143229; --hueso:#F2EFE6; --salvia:#8FA89C;
+  --papel:#F0F1E7; --tinta-sec:#5E6B60; --naranja:#FCA311; --linea:rgba(143,168,156,.22);
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --pad:clamp(20px,5vw,72px);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bosque);color:var(--hueso);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,canvas{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--salvia);outline-offset:3px;border-radius:6px}
+::selection{background:var(--salvia);color:var(--bosque)}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) var(--pad) 16px;transition:background .4s ease}
+.nav.solid{background:rgba(12,33,27,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:34px;height:26px;color:var(--hueso)}
+.brand span{font-family:var(--serif);font-size:19px;letter-spacing:.01em}
+.nav-link{font-size:15px;text-decoration:none;color:var(--hueso);padding:10px 16px;border:1px solid var(--linea);border-radius:999px;transition:border-color .2s}
+.nav-link:hover{border-color:var(--salvia)}
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:600 16px/1 var(--sans);text-decoration:none;cursor:pointer;
+  border-radius:999px;padding:18px 28px;border:0;transition:transform .2s ease, background .2s ease}
+.btn-primary{background:var(--naranja);color:var(--bosque)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--hueso);border:1px solid var(--linea)}
+.btn-ghost:hover{border-color:var(--salvia)}
+
+/* ---------- Hero 3D ---------- */
+.hero{position:relative;height:320vh}
+.hero-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#scene{position:absolute;inset:0;width:100%;height:100%}
+.hero-fallback{position:absolute;inset:0;display:none}
+.hero-copy{position:absolute;left:var(--pad);right:var(--pad);bottom:calc(env(safe-area-inset-bottom,0px) + 9vh);max-width:880px;pointer-events:none}
+.hero-copy .frame{position:absolute;left:0;bottom:0;opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .8s cubic-bezier(.2,.7,.2,1)}
+.hero-copy .frame.on{opacity:1;transform:none;pointer-events:auto}
+.hero-copy h1,.hero-copy h2{font-family:var(--serif);font-weight:300;font-size:clamp(40px,7.4vw,104px);line-height:.98;letter-spacing:-.025em;margin:0 0 22px;font-variation-settings:"opsz" 144}
+.hero-copy h1,.hero-copy h2,.hero-copy p{text-shadow:0 2px 24px rgba(12,33,27,.9),0 1px 2px rgba(12,33,27,.8)}
+.hero-copy p{font-size:clamp(17px,1.6vw,21px);color:var(--salvia);max-width:520px;margin:0 0 28px}
+.hero-meter{position:absolute;right:var(--pad);top:calc(env(safe-area-inset-top,0px) + 96px);text-align:right;font-family:var(--mono);color:var(--salvia);font-size:13px;line-height:1.7}
+.hero-meter b{display:block;font-weight:400;color:var(--hueso);font-size:clamp(28px,3.4vw,44px);line-height:1.1}
+.scroll-cue{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);width:1px;height:46px;background:var(--linea);overflow:hidden}
+.scroll-cue::after{content:"";position:absolute;left:0;top:-46px;width:1px;height:46px;background:var(--hueso);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{to{top:46px}}
+
+/* ---------- Secciones generales ---------- */
+section{position:relative}
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,5vw,68px);line-height:1.02;letter-spacing:-.02em;margin:0 0 20px;font-variation-settings:"opsz" 144}
+.lead{color:var(--salvia);font-size:clamp(17px,1.5vw,20px);max-width:560px;margin:0}
+
+/* ---------- Medición ---------- */
+.medir{padding:16vh 0 14vh;background:var(--bosque)}
+.medir-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:start}
+.medir-intro{position:sticky;top:120px}
+.medir-intro .note{margin-top:28px;font-size:14px;color:var(--salvia);max-width:380px}
+.panel{background:var(--alterno);border:1px solid var(--linea);border-radius:28px;padding:clamp(24px,4vw,48px);min-height:520px;position:relative;overflow:hidden}
+.progress{display:flex;gap:6px;margin-bottom:34px}
+.progress i{flex:1;height:3px;border-radius:3px;background:var(--linea);transition:background .4s}
+.progress i.done{background:var(--hueso)}
+.step{display:none}
+.step.on{display:block;animation:stepIn .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes stepIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.step-count{font-family:var(--mono);font-size:13px;color:var(--salvia);margin:0 0 10px}
+.q{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1.12;margin:0 0 28px;letter-spacing:-.01em}
+.options{display:grid;gap:12px}
+.opt{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;font:500 17px/1.3 var(--sans);color:var(--hueso);
+  background:transparent;border:1px solid var(--linea);border-radius:18px;padding:20px 22px;cursor:pointer;transition:border-color .2s, background .2s, transform .2s}
+.opt small{display:block;font-weight:400;font-size:14px;color:var(--salvia);margin-top:4px}
+.opt:hover{border-color:var(--salvia);transform:translateX(4px)}
+.opt[aria-pressed="true"]{background:var(--hueso);color:var(--bosque);border-color:var(--hueso)}
+.opt[aria-pressed="true"] small{color:var(--tinta-sec)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips .opt{width:auto;padding:14px 20px;border-radius:999px}
+.chips .opt:hover{transform:translateY(-2px)}
+.slider-out{font-family:var(--mono);font-size:clamp(56px,8vw,96px);line-height:1;margin:6px 0 4px}
+.slider-out span{font-size:.32em;color:var(--salvia);margin-left:10px}
+.slider-help{color:var(--salvia);font-size:15px;margin:0 0 30px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:var(--linea)}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:var(--linea)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:var(--hueso);margin-top:-13px;border:6px solid var(--alterno);box-shadow:0 0 0 1px var(--hueso)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--hueso);border:6px solid var(--alterno)}
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:34px;gap:12px}
+.link-btn{background:none;border:0;color:var(--salvia);font:500 15px var(--sans);cursor:pointer;padding:10px 0}
+.link-btn:hover{color:var(--hueso)}
+
+/* Resultado */
+.result{display:none}
+.result.on{display:block;animation:stepIn .6s cubic-bezier(.2,.7,.2,1)}
+.result-num{font-family:var(--mono);font-size:clamp(64px,10vw,128px);line-height:.95;letter-spacing:-.03em;margin:4px 0 8px}
+.result-num .unit{font-size:.3em;color:var(--salvia);letter-spacing:0;margin-left:8px}
+.result-eq{font-family:var(--serif);font-size:clamp(20px,2.2vw,26px);line-height:1.3;margin:0 0 26px;max-width:520px}
+.iso-wrap{height:190px;display:flex;align-items:center;justify-content:center;perspective:900px;margin:6px 0 18px}
+.iso{display:grid;grid-template-columns:repeat(13,18px);gap:5px;transform:rotateX(58deg) rotateZ(-38deg);transform-style:preserve-3d}
+.tile{width:18px;height:18px;border-radius:3px;background:#1d4337;transform:translateZ(0);transition:transform .7s cubic-bezier(.2,.8,.2,1), background .5s ease, box-shadow .7s ease;transform-style:preserve-3d}
+.tile.on{background:var(--hueso);transform:translateZ(16px);
+  box-shadow:1px 1px 0 #c9c5b8,2px 2px 0 #c9c5b8,3px 3px 0 #b8b4a6,4px 4px 0 #b8b4a6,5px 5px 0 #a6a294,6px 6px 0 #a6a294,10px 12px 18px rgba(0,0,0,.35)}
+.iso-legend{font-family:var(--mono);font-size:12px;color:var(--salvia);text-align:center;margin:0 0 24px}
+.reco{border-top:1px solid var(--linea);padding-top:22px;margin-top:6px}
+.reco h4{font:600 15px var(--sans);margin:0 0 6px;color:var(--salvia)}
+.reco p{margin:0 0 26px;font-size:17px;max-width:560px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.legal{font-size:12.5px;color:var(--salvia);margin:18px 0 0;max-width:560px;line-height:1.5}
+
+/* ---------- Sistema en acción ---------- */
+.flow{height:420vh;background:var(--bosque)}
+.flow-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:4vw;padding:0 var(--pad);max-width:1320px;margin:0 auto}
+.flow-text{position:relative;min-height:300px}
+.flow-text .beat{position:absolute;left:0;top:0;opacity:0;transform:translateY(20px);transition:opacity .5s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+.flow-text .beat.on{opacity:1;transform:none}
+.beat .clock{font-family:var(--mono);font-size:15px;color:var(--salvia);margin:0 0 14px}
+.beat h3{font-family:var(--serif);font-weight:300;font-size:clamp(34px,4.6vw,62px);line-height:1.02;letter-spacing:-.02em;margin:0 0 16px}
+.beat p{color:var(--salvia);max-width:440px;margin:0}
+.stage3d{perspective:1400px;display:flex;justify-content:center;align-items:center;height:100%}
+.phone{width:300px;height:600px;max-height:78vh;border-radius:46px;background:#091812;border:1px solid rgba(143,168,156,.35);position:relative;transform-style:preserve-3d;
+  box-shadow:inset 0 0 0 9px #0f2a22, 30px 50px 80px rgba(0,0,0,.45);will-change:transform}
+.phone::before{content:"";position:absolute;inset:-1px;border-radius:46px;transform:translateZ(-18px);background:#06110d;border:1px solid rgba(143,168,156,.18)}
+.screen{position:absolute;inset:12px;border-radius:36px;background:var(--alterno);overflow:hidden;display:flex;flex-direction:column}
+.screen-head{display:flex;align-items:center;gap:10px;padding:34px 16px 12px;border-bottom:1px solid var(--linea)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--bosque);display:grid;place-items:center}
+.avatar svg{width:17px;height:13px}
+.screen-head b{font:600 14px var(--sans);display:block}
+.screen-head small{font-size:11.5px;color:var(--salvia)}
+.msgs{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end}
+.msg{max-width:82%;font-size:13.5px;line-height:1.4;padding:10px 12px;border-radius:16px;opacity:0;transform:translateY(10px) scale(.98);transition:opacity .4s ease, transform .5s cubic-bezier(.2,.8,.2,1)}
+.msg.on{opacity:1;transform:none}
+.msg.in{align-self:flex-start;background:var(--bosque);border-bottom-left-radius:5px}
+.msg.out{align-self:flex-end;background:var(--hueso);color:var(--bosque);border-bottom-right-radius:5px}
+.msg time{display:block;font-family:var(--mono);font-size:10.5px;opacity:.6;margin-top:4px}
+.float-card{position:absolute;width:250px;padding:16px 18px;border-radius:18px;background:var(--papel);color:var(--bosque);font-size:13px;line-height:1.45;
+  box-shadow:0 30px 60px rgba(0,0,0,.4);opacity:0;transition:opacity .5s ease, transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.float-card.on{opacity:1}
+.float-card h5{font:600 12px var(--sans);color:var(--tinta-sec);margin:0 0 8px}
+.float-card .row{display:flex;justify-content:space-between;border-top:1px solid rgba(12,33,27,.12);padding:6px 0}
+.float-card .row:first-of-type{border-top:0}
+.float-card .mono{font-family:var(--mono)}
+.card-crm{left:-190px;top:120px;transform:translateZ(0) translateX(60px) rotateY(18deg)}
+.card-crm.on{transform:translateZ(110px) translateX(0) rotateY(18deg)}
+.card-rep{right:-200px;bottom:90px;transform:translateZ(0) translateX(-60px) rotateY(-14deg)}
+.card-rep.on{transform:translateZ(140px) translateX(0) rotateY(-14deg)}
+
+/* ---------- México ---------- */
+.mx{padding:22vh 0;overflow:hidden;background:var(--alterno)}
+.mx-layers{position:relative;height:clamp(180px,30vw,420px);margin-bottom:6vh}
+.mx-layers .num{position:absolute;left:var(--pad);top:0;font-family:var(--mono);font-size:clamp(120px,26vw,380px);line-height:1;letter-spacing:-.05em;white-space:nowrap;will-change:transform}
+.mx-layers .ghost1{color:transparent;-webkit-text-stroke:1px rgba(143,168,156,.28)}
+.mx-layers .ghost2{color:transparent;-webkit-text-stroke:1px rgba(143,168,156,.14)}
+.mx-layers .solid{color:var(--hueso)}
+.mx-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6vw;align-items:end}
+.mx-copy p{color:var(--salvia);margin:0;max-width:460px}
+.src{font-size:13px;color:var(--salvia);margin-top:14px;opacity:.8}
+
+/* ---------- 8 vs 24 ---------- */
+.dial{padding:20vh 0}
+.dial-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6vw;align-items:center}
+.dials{display:flex;gap:clamp(18px,4vw,48px);justify-content:center;perspective:1000px}
+.dial-item{text-align:center}
+.dial-item svg{width:clamp(140px,18vw,230px);height:auto;transform:rotateX(18deg);transition:transform .6s}
+.dial-item:hover svg{transform:rotateX(0)}
+.dial-item b{display:block;font-family:var(--mono);font-weight:400;font-size:clamp(30px,3.6vw,48px);margin-top:14px}
+.dial-item span{color:var(--salvia);font-size:15px}
+.seg{fill:none;stroke:rgba(143,168,156,.18);stroke-width:22;transition:stroke .35s ease}
+.seg.lit{stroke:var(--hueso)}
+
+/* ---------- Servicios ---------- */
+.svc{padding:16vh 0 18vh;background:var(--bosque)}
+.svc-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:7vh;flex-wrap:wrap}
+.svc-list{border-top:1px solid var(--linea)}
+.svc-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:4vw;align-items:center;padding:clamp(22px,3.4vw,40px) 0;border-bottom:1px solid var(--linea);transition:padding .4s ease}
+.svc-row h3{font-family:var(--serif);font-weight:300;font-size:clamp(30px,4.4vw,60px);line-height:1;letter-spacing:-.02em;margin:0;will-change:transform;transition:color .3s}
+.svc-row p{color:var(--salvia);margin:0;max-width:460px;transition:color .3s}
+.svc-row:hover h3{color:var(--papel)}
+.svc-row:hover p{color:var(--hueso)}
+
+/* ---------- Proceso ---------- */
+.proc{padding:16vh 0;background:var(--papel);color:var(--bosque)}
+.proc .lead{color:var(--tinta-sec)}
+.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:9vh;position:relative}
+.timeline::before{content:"";position:absolute;left:0;right:0;top:22px;height:1px;background:rgba(12,33,27,.18)}
+.tstep{position:relative;padding-top:64px}
+.tstep .n{position:absolute;top:0;left:0;width:45px;height:45px;border-radius:50%;background:var(--bosque);color:var(--papel);display:grid;place-items:center;font-family:var(--mono);font-size:14px}
+.tstep .when{font-family:var(--mono);font-size:13px;color:var(--tinta-sec);margin:0 0 8px}
+.tstep h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.15;margin:0 0 10px}
+.tstep p{margin:0;color:var(--tinta-sec);font-size:16px}
+
+/* ---------- Meta: esta página ---------- */
+.meta{padding:20vh 0;overflow:hidden;background:var(--bosque)}
+.meta-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6vw;align-items:center}
+.stack{position:relative;height:420px;perspective:1200px}
+.sheet{position:absolute;left:50%;top:50%;width:min(360px,80%);aspect-ratio:3/4;margin-left:calc(min(360px,80%) / -2);margin-top:-240px;border-radius:20px;border:1px solid var(--linea);background:var(--alterno);
+  transform-style:preserve-3d;will-change:transform;padding:22px;overflow:hidden}
+.sheet .bar{height:10px;border-radius:5px;background:rgba(143,168,156,.25);margin-bottom:10px}
+.sheet .big{height:56px;border-radius:8px;background:rgba(242,239,230,.85);margin:24px 0 14px;width:80%}
+.sheet .blk{height:90px;border-radius:12px;background:var(--bosque);margin-top:16px}
+.sheet.s2{background:#123027}
+.sheet.s3{background:var(--papel);border-color:transparent}
+.sheet.s3 .big{background:var(--bosque)}
+.sheet.s3 .bar{background:rgba(12,33,27,.15)}
+.sheet.s3 .blk{background:rgba(12,33,27,.08)}
+
+/* ---------- Cierre ---------- */
+.close{padding:22vh 0 12vh;background:var(--alterno);text-align:left}
+.close .h2{font-size:clamp(44px,8vw,120px);max-width:12ch}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-top:14vh;padding-top:28px;border-top:1px solid var(--linea);font-size:15px;color:var(--salvia)}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--hueso)}
+
+/* ---------- Reveal ---------- */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s ease, transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .medir-grid,.mx-copy,.dial-grid,.meta-grid,.svc-row{grid-template-columns:minmax(0,1fr)}
+  .medir-intro{position:static}
+  .flow-stick{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;align-content:center;padding-top:calc(env(safe-area-inset-top,0px) + 80px);gap:10px}
+  .flow-text{min-height:190px}
+  .beat h3{font-size:clamp(28px,8vw,40px)}
+  .beat p{font-size:15px}
+  .phone{width:250px;height:470px;max-height:56vh;border-radius:38px}
+  .screen{border-radius:30px}
+  .card-crm{left:-70px;top:60px;width:190px}
+  .card-rep{right:-60px;bottom:40px;width:190px}
+  .timeline{grid-template-columns:minmax(0,1fr);gap:8px}
+  .timeline::before{left:22px;right:auto;top:0;bottom:0;width:1px;height:auto}
+  .tstep{padding:0 0 32px 72px}
+  .stack{height:360px;margin-top:40px}
+  .sheet{margin-top:-200px}
+  .hero-meter{top:calc(env(safe-area-inset-top,0px) + 80px)}
+  .panel{min-height:0}
+}
+@media (max-width:520px){
+  .brand span{display:none}
+  .iso{grid-template-columns:repeat(13,14px);gap:4px}
+  .tile{width:14px;height:14px}
+  .float-card{font-size:12px;padding:12px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Logo oficial de Mattera (vectorizado de mattera-logo-transparent.png) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mattera-logo" viewBox="0 0 100 76.07">
+    <path fill="currentColor" fill-rule="evenodd" d="M0.48 23.3 L0.0 24.88 L0.0 63.39 L0.95 65.61 L3.17 67.51 L4.6 69.1 L6.97 71.0 L8.72 71.32 L10.3 70.68 L26.47 56.26 L27.73 56.26 L33.91 62.28 L39.78 67.51 L46.75 74.33 L48.97 75.91 L50.87 75.91 L52.14 75.28 L67.99 60.38 L71.0 57.21 L72.27 56.26 L73.38 56.26 L79.87 62.12 L83.84 65.29 L88.11 69.41 L90.17 71.0 L91.76 71.32 L93.5 70.68 L98.1 66.56 L99.52 64.66 L99.84 63.39 L99.68 23.93 L98.42 21.87 L93.34 16.48 L80.82 3.96 L77.65 0.48 L76.7 0.0 L74.96 0.0 L73.06 1.27 L49.92 25.04 L47.07 22.35 L43.26 18.07 L37.72 12.52 L37.88 12.36 L37.72 12.52 L37.24 12.2 L29.95 4.44 L26.15 0.63 L25.04 0.0 L23.3 0.0 L22.03 0.63 L5.86 17.43 L2.22 20.92 Z M10.46 27.73 L11.25 26.47 L23.45 13.79 L24.56 13.79 L46.91 36.93 L48.81 38.19 L50.87 38.19 L51.82 37.88 L53.88 35.97 L66.24 22.98 L73.69 15.53 L74.48 14.42 L75.28 13.79 L76.39 13.79 L81.77 19.18 L83.68 21.55 L87.48 25.2 L89.22 27.42 L89.54 49.13 L89.38 56.26 L88.91 56.26 L87.64 54.99 L87.32 54.99 L74.33 43.42 L72.74 42.79 L72.11 42.79 L70.21 43.74 L50.08 63.07 L49.76 63.07 L39.3 53.09 L39.46 52.93 L39.14 53.09 L30.59 44.69 L28.68 43.11 L27.26 42.79 L25.99 43.11 L25.04 43.74 L13.31 54.36 L11.57 55.63 L10.78 56.58 L10.46 56.58 Z"/>
+  </symbol>
+</svg>
+
+<nav class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Mattera Systems, inicio">
+    <svg aria-hidden="true"><use href="#mattera-logo"/></svg>
+    <span>Mattera Systems</span>
+  </a>
+  <div style="display:flex;gap:8px"><a class="nav-link" href="#demos">Ver demos</a><a class="nav-link" href="#medir">Medir mis horas</a></div>
+</nav>
+
+<main id="top">
+
+<!-- ================= HERO 3D ================= -->
+<section class="hero" id="hero" aria-label="Tu semana en horas">
+  <div class="hero-stick">
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="hero-meter" aria-hidden="true">
+      <b id="meterNum">168</b><span id="meterLabel">horas en tu semana</span>
+    </div>
+    <div class="hero-copy">
+      <div class="frame on" data-frame="0">
+        <h1>Tu semana tiene 168 horas.</h1>
+        <p>Cada bloque es una. Desliza para ver cuántas se van en trabajo que no necesita a una persona.</p>
+      </div>
+      <div class="frame" data-frame="1">
+        <h2>Las claras se repiten todos los días.</h2>
+        <p>Contestar lo mismo, capturar datos, perseguir pendientes. Funcionan porque tu tiempo las está subsidiando.</p>
+      </div>
+      <div class="frame" data-frame="2">
+        <h2>Un sistema las opera. Tú decides.</h2>
+        <p>Mattera construye los sistemas con IA que devuelven esas horas a tu empresa y a tu gente.</p>
+        <a class="btn btn-primary" href="#medir">Medir mis horas</a>
+      </div>
+    </div>
+    <div class="scroll-cue" id="cue" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ================= MEDICIÓN ================= -->
+<section class="medir" id="medir" aria-labelledby="medirTitle">
+  <div class="wrap medir-grid">
+    <div class="medir-intro rv">
+      <h2 class="h2" id="medirTitle">Mide cuántas horas pierdes al año.</h2>
+      <p class="lead">Tres preguntas. Sesenta segundos. Funciona si tienes un negocio, si trabajas en uno o si estudias.</p>
+      <p class="note">El cálculo es una estimación conservadora basada en 48 semanas laborales al año. No guardamos tus respuestas en esta página.</p>
+    </div>
+
+    <div class="panel rv" id="panel">
+      <div class="progress" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+      <!-- Paso 1 -->
+      <div class="step on" data-step="1">
+        <p class="step-count">Pregunta 1 de 3</p>
+        <h3 class="q">¿Cuál es tu caso?</h3>
+        <div class="options" role="group" aria-label="Tu caso">
+          <button class="opt" data-perfil="negocio" aria-pressed="false">Tengo un negocio<small>Soy dueño, socio o lo dirijo</small></button>
+          <button class="opt" data-perfil="trabajo" aria-pressed="false">Trabajo en una empresa<small>Tengo un puesto y un equipo o jefe</small></button>
+          <button class="opt" data-perfil="estudio" aria-pressed="false">Estudio o estoy empezando algo<small>Escuela, proyecto o emprendimiento</small></button>
+        </div>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="step" data-step="2">
+        <p class="step-count">Pregunta 2 de 3</p>
+        <h3 class="q" id="q2">¿Cuántas horas a la semana se van en tareas repetitivas?</h3>
+        <div class="slider-out" aria-live="polite"><output id="hrsOut">8</output><span>h / semana</span></div>
+        <p class="slider-help" id="hrsHelp">Contestar lo mismo, copiar datos, armar reportes, dar seguimiento.</p>
+        <label for="hrs" class="sr" style="position:absolute;left:-9999px">Horas por semana</label>
+        <input type="range" id="hrs" min="1" max="40" value="8" step="1">
+        <div id="teamWrap" hidden>
+          <p class="step-count" style="margin-top:26px">¿Cuántas personas de tu equipo hacen estas tareas?</p>
+          <div class="chips" role="group" aria-label="Personas en el equipo">
+            <button class="opt" data-team="1" aria-pressed="true">Solo yo</button>
+            <button class="opt" data-team="2" aria-pressed="false">2</button>
+            <button class="opt" data-team="4" aria-pressed="false">3 a 5</button>
+            <button class="opt" data-team="8" aria-pressed="false">6 a 10</button>
+            <button class="opt" data-team="15" aria-pressed="false">Más de 10</button>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="link-btn" data-back>Anterior</button>
+          <button class="btn btn-ghost" data-next>Continuar</button>
+        </div>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="step" data-step="3">
+        <p class="step-count">Pregunta 3 de 3</p>
+        <h3 class="q">¿Qué tarea te gustaría no volver a hacer?</h3>
+        <div class="chips" role="group" aria-label="Tarea">
+          <button class="opt" data-tarea="mensajes" aria-pressed="false">Contestar mensajes</button>
+          <button class="opt" data-tarea="captura" aria-pressed="false">Capturar datos</button>
+          <button class="opt" data-tarea="reportes" aria-pressed="false">Hacer reportes</button>
+          <button class="opt" data-tarea="seguimiento" aria-pressed="false">Dar seguimiento</button>
+          <button class="opt" data-tarea="agenda" aria-pressed="false">Agendar citas</button>
+          <button class="opt" data-tarea="pendientes" aria-pressed="false">Organizar pendientes</button>
+        </div>
+        <div class="step-nav">
+          <button class="link-btn" data-back>Anterior</button>
+          <button class="btn btn-ghost" id="calc" disabled style="opacity:.4">Ver mi resultado</button>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="result" id="result" aria-live="polite">
+        <p class="step-count" id="rLabel">Tu resultado</p>
+        <div class="result-num"><span id="rNum">0</span><span class="unit">h al año</span></div>
+        <p class="result-eq" id="rEq"></p>
+        <div class="iso-wrap" aria-hidden="true"><div class="iso" id="iso"></div></div>
+        <p class="iso-legend" id="isoLegend"></p>
+        <div class="reco">
+          <h4 id="recoTitle">Cómo se resuelve</h4>
+          <p id="recoText"></p>
+          <div class="cta-row" id="ctaRow"></div>
+          <p class="legal" id="legal"></p>
+          <button class="link-btn" id="again" style="margin-top:10px">Medir de nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SISTEMA EN ACCIÓN ================= -->
+<section class="flow" id="flow" aria-label="Así opera un sistema de Mattera">
+  <div class="flow-stick">
+    <div class="flow-text">
+      <div class="beat on" data-beat="0">
+        <p class="clock">23:14</p>
+        <h3>Tu negocio cerró. Tu sistema no.</h3>
+        <p>Un cliente escribe a la hora en que nadie contesta. Así responde un agente de Mattera.</p>
+      </div>
+      <div class="beat" data-beat="1">
+        <p class="clock">23:14 · 6 segundos después</p>
+        <h3>Responde, resuelve y agenda.</h3>
+        <p>Con la información real de tu negocio: precios, horarios, disponibilidad.</p>
+      </div>
+      <div class="beat" data-beat="2">
+        <p class="clock">23:15</p>
+        <h3>Todo queda registrado.</h3>
+        <p>El contacto, la cita y la conversación entran a tu CRM sin que nadie capture nada.</p>
+      </div>
+      <div class="beat" data-beat="3">
+        <p class="clock">08:00</p>
+        <h3>Tú llegas a decidir.</h3>
+        <p>El reporte de la noche ya está listo. Tu equipo empieza el día con lo que sí necesita a una persona.</p>
+      </div>
+    </div>
+
+    <div class="stage3d">
+      <div class="phone" id="phone">
+        <div class="screen">
+          <div class="screen-head">
+            <div class="avatar"><svg aria-hidden="true" style="color:var(--hueso)"><use href="#mattera-logo"/></svg></div>
+            <div><b>Tu negocio</b><small>Agente de IA · en línea</small></div>
+          </div>
+          <div class="msgs">
+            <div class="msg in" data-at="0.06">Hola, ¿tienen lugar mañana en la tarde?<time>23:14</time></div>
+            <div class="msg out" data-at="0.24">Hola, Andrea. Mañana tenemos 16:00 y 17:30. ¿Cuál te acomoda?<time>23:14</time></div>
+            <div class="msg in" data-at="0.34">17:30 porfa<time>23:14</time></div>
+            <div class="msg out" data-at="0.42">Listo. Te agendé mañana a las 17:30. Te mando un recordatorio una hora antes.<time>23:15</time></div>
+          </div>
+        </div>
+        <div class="float-card card-crm" id="cardCrm">
+          <h5>CRM · contacto nuevo</h5>
+          <div class="row"><span>Andrea M.</span><span class="mono">Lead</span></div>
+          <div class="row"><span>Cita</span><span class="mono">Mié 17:30</span></div>
+          <div class="row"><span>Origen</span><span>WhatsApp</span></div>
+          <div class="row"><span>Recordatorio</span><span class="mono">16:30</span></div>
+        </div>
+        <div class="float-card card-rep" id="cardRep">
+          <h5>Reporte de la noche</h5>
+          <div class="row"><span>Conversaciones</span><span class="mono">37</span></div>
+          <div class="row"><span>Citas agendadas</span><span class="mono">12</span></div>
+          <div class="row"><span>Sin respuesta</span><span class="mono">0</span></div>
+          <div class="row"><span>Respuesta promedio</span><span class="mono">6 s</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MÉXICO ================= -->
+<section class="mx" aria-labelledby="mxTitle">
+  <div class="mx-layers" aria-hidden="true">
+    <div class="num ghost2" data-speed="-0.35">2,308</div>
+    <div class="num ghost1" data-speed="-0.18">2,308</div>
+    <div class="num solid" data-speed="0">2,308</div>
+  </div>
+  <div class="wrap mx-copy">
+    <div class="rv">
+      <h2 class="h2" id="mxTitle">El problema nunca fue el esfuerzo. Es el sistema.</h2>
+    </div>
+    <div class="rv">
+      <p>México trabaja 2,308 horas al año por persona, más que cualquier otro país de la OCDE, y aun así produce cerca de 30 dólares por hora, contra un promedio de 70. Más horas no es la respuesta. Mejores sistemas sí.</p>
+      <p class="src">Fuente: OCDE, horas anuales trabajadas y productividad laboral.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 8 vs 24 ================= -->
+<section class="dial" id="dial" aria-labelledby="dialTitle">
+  <div class="wrap dial-grid">
+    <div class="rv">
+      <h2 class="h2" id="dialTitle">Una persona más resuelve 8 horas al día. Un sistema, 24.</h2>
+      <p class="lead">Contratar es la respuesta de siempre. Un sistema no sustituye a tu equipo: le quita el trabajo de máquina para que haga el trabajo de personas.</p>
+    </div>
+    <div class="dials">
+      <div class="dial-item"><svg viewBox="0 0 200 200" id="dialA" aria-hidden="true"></svg><b><span id="dA">0</span> h</b><span>Una persona</span></div>
+      <div class="dial-item"><svg viewBox="0 0 200 200" id="dialB" aria-hidden="true"></svg><b><span id="dB">0</span> h</b><span>Un sistema</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEMOS DE PRODUCTO ================= -->
+<section class="demos" id="demos" aria-labelledby="demosTitle">
+  <div class="wrap">
+    <div class="demos-head rv">
+      <h2 class="h2" id="demosTitle">Pruébalo tú. Seis sistemas en versión demo.</h2>
+      <p class="lead">Elige un producto y úsalo como lo usaría tu negocio. Los datos son de ejemplo; el funcionamiento es real.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Productos de Mattera">
+      <button role="tab" id="t-chat" aria-controls="p-chat" aria-selected="true">Chatbot de WhatsApp</button>
+      <button role="tab" id="t-agent" aria-controls="p-agent" aria-selected="false" tabindex="-1">Agente de IA</button>
+      <button role="tab" id="t-crm" aria-controls="p-crm" aria-selected="false" tabindex="-1">CRM a medida</button>
+      <button role="tab" id="t-int" aria-controls="p-int" aria-selected="false" tabindex="-1">Integraciones</button>
+      <button role="tab" id="t-rep" aria-controls="p-rep" aria-selected="false" tabindex="-1">Reportes</button>
+      <button role="tab" id="t-web" aria-controls="p-web" aria-selected="false" tabindex="-1">Sitio web</button>
+    </div>
+
+    <!-- 1. Chatbot -->
+    <div class="tabpanel" role="tabpanel" id="p-chat" aria-labelledby="t-chat">
+      <div class="demo-grid">
+        <div class="demo-copy">
+          <p class="kicker">Chatbot de WhatsApp</p>
+          <h3>Escríbele como si fueras su cliente.</h3>
+          <p>Atiende a cualquier hora, responde con la información real del negocio, califica, agenda y pasa a una persona solo lo que lo necesita.</p>
+          <p class="hint">Toca una pregunta o escribe la tuya.</p>
+        </div>
+        <div class="wa">
+          <div class="wa-head"><div class="avatar"><svg aria-hidden="true"><use href="#mattera-logo"/></svg></div><div><b>Tu negocio</b><small id="waStatus">en línea</small></div></div>
+          <div class="wa-body" id="waBody" aria-live="polite"></div>
+          <div class="wa-chips" id="waChips"></div>
+          <form class="wa-input" id="waForm"><input id="waIn" autocomplete="off" placeholder="Escribe un mensaje" aria-label="Mensaje para el chatbot"><button aria-label="Enviar">Enviar</button></form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Agente -->
+    <div class="tabpanel" role="tabpanel" id="p-agent" aria-labelledby="t-agent" hidden>
+      <div class="demo-grid">
+        <div class="demo-copy">
+          <p class="kicker">Agente de IA</p>
+          <h3>No solo responde. Ejecuta el proceso completo.</h3>
+          <p>Elige una tarea y mira cómo el agente la resuelve paso por paso, con las herramientas del negocio.</p>
+          <div class="task-pick" role="group" aria-label="Tareas">
+            <button class="opt-pill" data-task="cotizar" aria-pressed="true">Cotizar a un cliente</button>
+            <button class="opt-pill" data-task="seguimiento" aria-pressed="false">Dar seguimiento a pendientes</button>
+            <button class="opt-pill" data-task="validar" aria-pressed="false">Validar y registrar un pedido</button>
+          </div>
+          <button class="btn btn-ghost" id="runTask" style="margin-top:22px">Ejecutar tarea</button>
+        </div>
+        <div class="agent-run">
+          <div class="run-head"><span class="mono" id="runTitle">Tarea: cotizar a un cliente</span><span class="mono run-time" id="runTime">0.0 s</span></div>
+          <ol class="run-steps" id="runSteps"></ol>
+          <div class="run-out" id="runOut" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CRM -->
+    <div class="tabpanel" role="tabpanel" id="p-crm" aria-labelledby="t-crm" hidden>
+      <div class="demo-copy wide">
+        <p class="kicker">CRM a medida</p>
+        <h3>Cada cliente, en qué etapa va y qué sigue.</h3>
+        <p>Arrastra las tarjetas entre columnas o toca una para ver su historial. Sin licencias por usuario: el CRM se diseña para cómo trabaja tu empresa.</p>
+        <button class="btn btn-ghost" id="crmNew">Simular lead nuevo desde WhatsApp</button>
+      </div>
+      <div class="kanban" id="kanban">
+        <div class="col" data-col="nuevo"><h4>Nuevo <span class="mono"></span></h4><div class="drop"></div></div>
+        <div class="col" data-col="contactado"><h4>Contactado <span class="mono"></span></h4><div class="drop"></div></div>
+        <div class="col" data-col="propuesta"><h4>Propuesta <span class="mono"></span></h4><div class="drop"></div></div>
+        <div class="col" data-col="ganado"><h4>Ganado <span class="mono"></span></h4><div class="drop"></div></div>
+      </div>
+      <div class="crm-detail" id="crmDetail" hidden></div>
+    </div>
+
+    <!-- 4. Integraciones -->
+    <div class="tabpanel" role="tabpanel" id="p-int" aria-labelledby="t-int" hidden>
+      <div class="demo-grid">
+        <div class="demo-copy">
+          <p class="kicker">Integraciones</p>
+          <h3>Lo que entra por un canal llega a donde tiene que llegar.</h3>
+          <p>Elige de dónde llega la información y mira cómo se reparte sola, sin copiar y pegar.</p>
+          <div class="task-pick" role="group" aria-label="Origen">
+            <button class="opt-pill" data-src="wa" aria-pressed="true">Mensaje de WhatsApp</button>
+            <button class="opt-pill" data-src="form" aria-pressed="false">Formulario del sitio</button>
+            <button class="opt-pill" data-src="mail" aria-pressed="false">Correo con pedido</button>
+          </div>
+          <button class="btn btn-ghost" id="runInt" style="margin-top:22px">Enviar evento</button>
+        </div>
+        <div class="flowmap">
+          <svg viewBox="0 0 560 340" id="intSvg" aria-hidden="true">
+            <g class="lines">
+              <path id="l-wa" d="M110 70 C200 70 200 170 280 170"/>
+              <path id="l-form" d="M110 170 L280 170"/>
+              <path id="l-mail" d="M110 270 C200 270 200 170 280 170"/>
+              <path id="l-crm" d="M280 170 C360 170 360 70 450 70"/>
+              <path id="l-sheet" d="M280 170 L450 170"/>
+              <path id="l-cal" d="M280 170 C360 170 360 270 450 270"/>
+            </g>
+            <g class="nodes">
+              <g data-n="wa"><rect x="20" y="48" width="96" height="44" rx="12"/><text x="68" y="75">WhatsApp</text></g>
+              <g data-n="form"><rect x="20" y="148" width="96" height="44" rx="12"/><text x="68" y="175">Formulario</text></g>
+              <g data-n="mail"><rect x="20" y="248" width="96" height="44" rx="12"/><text x="68" y="275">Correo</text></g>
+              <g class="hub"><circle cx="280" cy="170" r="38"/><use href="#mattera-logo" x="263" y="158" width="34" height="26"/></g>
+              <g data-n="crm"><rect x="444" y="48" width="96" height="44" rx="12"/><text x="492" y="75">CRM</text></g>
+              <g data-n="sheet"><rect x="440" y="148" width="114" height="44" rx="12"/><text x="497" y="175">Hoja de cálculo</text></g>
+              <g data-n="cal"><rect x="444" y="248" width="96" height="44" rx="12"/><text x="492" y="275">Calendario</text></g>
+            </g>
+            <g id="packets"></g>
+          </svg>
+          <ul class="int-log mono" id="intLog" aria-live="polite"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Reportes -->
+    <div class="tabpanel" role="tabpanel" id="p-rep" aria-labelledby="t-rep" hidden>
+      <div class="demo-copy wide">
+        <p class="kicker">Reportes y analítica</p>
+        <h3>Los números de tu operación, actualizados solos.</h3>
+        <p>Cambia el periodo y mira cómo se recalcula todo. Datos de ejemplo.</p>
+        <div class="task-pick" role="group" aria-label="Periodo">
+          <button class="opt-pill" data-per="semana" aria-pressed="true">Esta semana</button>
+          <button class="opt-pill" data-per="mes" aria-pressed="false">Este mes</button>
+          <button class="opt-pill" data-per="trimestre" aria-pressed="false">Trimestre</button>
+        </div>
+      </div>
+      <div class="dash">
+        <div class="kpi"><span>Conversaciones atendidas</span><b class="mono" id="k1">0</b></div>
+        <div class="kpi"><span>Citas agendadas</span><b class="mono" id="k2">0</b></div>
+        <div class="kpi"><span>Respuesta promedio</span><b class="mono" id="k3">0 s</b></div>
+        <div class="kpi"><span>Horas devueltas al equipo</span><b class="mono" id="k4">0 h</b></div>
+        <div class="chart"><svg viewBox="0 0 600 220" preserveAspectRatio="none" id="repChart" aria-label="Conversaciones por periodo, datos de ejemplo" role="img"></svg><div class="chart-x mono" id="repX"></div></div>
+      </div>
+    </div>
+
+    <!-- 6. Sitio web -->
+    <div class="tabpanel" role="tabpanel" id="p-web" aria-labelledby="t-web" hidden>
+      <div class="demo-grid">
+        <div class="demo-copy">
+          <p class="kicker">Sitio web</p>
+          <h3>Rápido, claro y con un asistente que convierte visitas en conversaciones.</h3>
+          <p>Cambia entre escritorio y celular, y abre el asistente del sitio de ejemplo.</p>
+          <div class="task-pick" role="group" aria-label="Vista">
+            <button class="opt-pill" data-view="desk" aria-pressed="true">Escritorio</button>
+            <button class="opt-pill" data-view="mob" aria-pressed="false">Celular</button>
+          </div>
+          <div class="plans">
+            <div><b>T1 Presencia</b><span class="mono">$5,900</span><small>1 página · en línea en 5 días</small></div>
+            <div><b>T2 Sistema</b><span class="mono">$9,900</span><small>Hasta 5 secciones + asistente de IA · 7 días</small></div>
+            <div><b>T3 Operación</b><span class="mono">$19,900</span><small>Secciones ilimitadas + panel de contactos · 14 días</small></div>
+          </div>
+          <p class="hint">Precio público en MXN, de contado o a 6 meses sin intereses. Sitios publicados: caabsasteel.mx, birrieriacocula.com, luxuryandblush.com, bisel3d.com.</p>
+        </div>
+        <div class="browser" id="browser" data-view="desk">
+          <div class="b-bar"><i></i><i></i><i></i><span class="mono">tunegocio.com</span></div>
+          <div class="b-page">
+            <div class="b-nav"><b>Tu negocio</b><span>Servicios</span><span>Contacto</span></div>
+            <div class="b-hero"><h4>Lo que tu cliente busca, en una sola página.</h4><p>Ejemplo de sitio con botón de WhatsApp, formulario y asistente.</p><span class="b-btn">Agendar</span></div>
+            <div class="b-cards"><div></div><div></div><div></div></div>
+            <button class="b-bubble" id="bBubble" aria-label="Abrir asistente del sitio de ejemplo"><svg aria-hidden="true"><use href="#mattera-logo"/></svg></button>
+            <div class="b-chat" id="bChat" hidden><p class="in">Hola, ¿en qué te ayudo?</p><p class="out">¿Hacen envíos?</p><p class="in">Sí, a todo el estado. ¿Te comparto el horario de entrega?</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demos-cta rv">
+      <p>¿Cuánto tiempo y dinero le ahorraría uno de estos sistemas a tu negocio?</p>
+      <button class="btn btn-primary" data-open-agent="calc">Calcularlo con el agente</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AGENTE MATTERA ================= -->
+<button class="ag-fab" id="agFab" aria-controls="agPanel" aria-expanded="false"><svg aria-hidden="true"><use href="#mattera-logo"/></svg><span>Pregúntale al agente</span></button>
+<div class="ag-panel" id="agPanel" role="dialog" aria-label="Agente de Mattera" hidden>
+  <div class="ag-head">
+    <div class="avatar"><svg aria-hidden="true"><use href="#mattera-logo"/></svg></div>
+    <div><b>Agente de Mattera</b><small id="agMode">resuelve dudas y calcula tu ahorro</small></div>
+    <button class="ag-x" id="agClose" aria-label="Cerrar">×</button>
+  </div>
+  <div class="ag-body" id="agBody" aria-live="polite"></div>
+  <div class="ag-chips" id="agChips"></div>
+  <form class="ag-input" id="agForm"><input id="agIn" autocomplete="off" placeholder="Escribe tu pregunta" aria-label="Mensaje para el agente"><button>Enviar</button></form>
+</div>
+
+<!-- ================= PROCESO ================= -->
+<section class="proc" aria-labelledby="procTitle">
+  <div class="wrap">
+    <div class="rv">
+      <h2 class="h2" id="procTitle">De la conversación al sistema operando en 14 días.</h2>
+      <p class="lead">Un proceso cerrado, con fechas, entregables y una sola métrica: horas devueltas.</p>
+    </div>
+    <div class="timeline">
+      <div class="tstep rv"><span class="n">1</span><p class="when">Día 0</p><h3>Diagnóstico de 30 minutos</h3><p>Revisamos tu operación y te entregamos el reporte el mismo día.</p></div>
+      <div class="tstep rv"><span class="n">2</span><p class="when">Día 1</p><h3>Propuesta con retorno calculado</h3><p>Qué construimos, cuánto cuesta y cuántas horas recupera.</p></div>
+      <div class="tstep rv"><span class="n">3</span><p class="when">Días 1 a 14</p><h3>Implementación</h3><p>Avances los días 3, 8 y 13. Entrega en vivo con tu equipo.</p></div>
+      <div class="tstep rv"><span class="n">4</span><p class="when">Cada mes</p><h3>Reporte de horas devueltas</h3><p>Operamos, ajustamos y medimos el sistema mes con mes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= META: ESTA PÁGINA ================= -->
+<section class="meta" id="meta" aria-labelledby="metaTitle">
+  <div class="wrap meta-grid">
+    <div class="rv">
+      <h2 class="h2" id="metaTitle">Si esta página te hizo detenerte, piensa en tus clientes.</h2>
+      <p class="lead" style="margin-bottom:32px">También la construimos nosotros. Diseñamos sitios que se sienten a la altura de tu empresa y que convierten visitas en conversaciones de venta.</p>
+      <a class="btn btn-primary" id="webCta" href="#" target="_blank" rel="noopener">Quiero una página así</a>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <div class="sheet s1" data-depth="0"><div class="bar" style="width:40%"></div><div class="big"></div><div class="bar"></div><div class="bar" style="width:70%"></div><div class="blk"></div></div>
+      <div class="sheet s2" data-depth="1"><div class="bar" style="width:30%"></div><div class="big" style="width:60%"></div><div class="bar"></div><div class="blk"></div><div class="blk" style="height:50px"></div></div>
+      <div class="sheet s3" data-depth="2"><div class="bar" style="width:35%"></div><div class="big"></div><div class="bar"></div><div class="bar" style="width:55%"></div><div class="blk"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CIERRE ================= -->
+<section class="close" id="close" aria-labelledby="closeTitle">
+  <div class="wrap">
+    <h2 class="h2 rv" id="closeTitle">Crece tu empresa, no tu carga.</h2>
+    <div class="cta-row rv" style="margin-top:28px">
+      <a class="btn btn-primary" href="#medir">Medir mis horas</a>
+      <a class="btn btn-ghost" id="diagCta" href="#" target="_blank" rel="noopener">Agendar diagnóstico</a>
+    </div>
+    <div class="foot">
+      <a class="brand" href="#top" aria-label="Mattera Systems"><svg aria-hidden="true" style="width:30px;height:23px"><use href="#mattera-logo"/></svg><span style="font-size:17px">Mattera Systems</span></a>
+      <span>Guadalajara, Jalisco</span>
+      <a href="mailto:matterasystems@gmail.com">matterasystems@gmail.com</a>
+      <a href="https://wa.me/523327874747" target="_blank" rel="noopener">+52 33 2787 4747</a>
+      <a href="https://matterasystems.com/privacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>
+      <button class="link-btn" id="standBtn" type="button">Modo stand</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var WA = "523327874747";
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var clamp = function(v,a,b){return Math.max(a,Math.min(b,v));};
+var lerp = function(a,b,t){return a+(b-a)*t;};
+var ease = function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;};
+var fmt = function(n){return Math.round(n).toLocaleString("es-MX");};
+var waLink = function(text,num){return "https://wa.me/"+(num||"")+"?text="+encodeURIComponent(text);};
+
+/* ---------- Nav ---------- */
+var nav = document.getElementById("nav");
+
+/* ---------- Progreso de sección (0..1) ---------- */
+function sectionProgress(el){
+  var r = el.getBoundingClientRect();
+  var total = r.height - window.innerHeight;
+  return clamp(-r.top / (total>0?total:1), 0, 1);
+}
+
+/* ================= HERO 3D ================= */
+var hero = document.getElementById("hero");
+var frames = hero.querySelectorAll(".frame");
+var meterNum = document.getElementById("meterNum");
+var meterLabel = document.getElementById("meterLabel");
+var cue = document.getElementById("cue");
+var heroP = 0, heroTarget = 0;
+var threeOK = false, renderer, scene, camera, mesh, dummy, colorObj, N, cols, rows, cells = [];
+var pointer = {x:0,y:0}, pointerS = {x:0,y:0};
+var introStart = performance.now(), lastT = performance.now();
+
+function rand(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+
+function buildScene(){
+  if(!window.THREE) return false;
+  var canvas = document.getElementById("scene");
+  try{
+    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, powerPreference:"high-performance"});
+  }catch(e){return false;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.setClearColor(0x0C211B,1);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x0C211B, 18, 46);
+  camera = new THREE.PerspectiveCamera(38, 1, .1, 200);
+
+  var hemi = new THREE.HemisphereLight(0xF2EFE6, 0x0C211B, .55); scene.add(hemi);
+  var key = new THREE.DirectionalLight(0xFFF6E6, 1.05);
+  key.position.set(-12, 22, 10); key.castShadow = true;
+  key.shadow.mapSize.set(2048,2048);
+  var sc = key.shadow.camera; sc.left=-22; sc.right=22; sc.top=22; sc.bottom=-22; sc.near=1; sc.far=70;
+  key.shadow.bias = -0.0005;
+  scene.add(key);
+  var rim = new THREE.DirectionalLight(0x8FA89C, .45); rim.position.set(14, 8, -12); scene.add(rim);
+
+  var ground = new THREE.Mesh(new THREE.PlaneGeometry(200,200), new THREE.ShadowMaterial({opacity:.38}));
+  ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
+
+  layoutGrid();
+  var geo = new THREE.BoxGeometry(1,1,1); geo.translate(0,.5,0);
+  var mat = new THREE.MeshStandardMaterial({color:0xffffff, roughness:.62, metalness:.04});
+  mesh = new THREE.InstancedMesh(geo, mat, N);
+  mesh.castShadow = true; mesh.receiveShadow = true;
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(mesh);
+  dummy = new THREE.Object3D(); colorObj = new THREE.Color();
+  for(var i=0;i<N;i++){ mesh.setColorAt(i, colorObj.set(0x1d4337)); }
+  resize();
+  return true;
+}
+
+function layoutGrid(){
+  N = 168;
+  var narrow = window.innerWidth < 760;
+  cols = narrow ? 12 : 24; rows = N/cols;
+  cells = [];
+  var gap = 1.18;
+  for(var i=0;i<N;i++){
+    var c = i % cols, r = Math.floor(i/cols);
+    // horas repetitivas: horario laboral, patrón determinista (~34%)
+    var hourOfDay = narrow ? ((r%2)*12 + c) : c;
+    var working = hourOfDay>=9 && hourOfDay<=19;
+    var rep = working && rand(i) < .58;
+    cells.push({
+      x:(c-(cols-1)/2)*gap, z:(r-(rows-1)/2)*gap,
+      chaos: .4 + rand(i+7)*2.6,
+      rep: rep,
+      delay: (c + r*1.6) * 0.035
+    });
+  }
+}
+
+function resize(){
+  if(!threeOK && !renderer) return;
+  var w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect = w/h;
+  camera.fov = w < 760 ? 52 : 38;
+  camera.updateProjectionMatrix();
+}
+
+var repCount = 0;
+function renderHero(now){
+  var t = (now - introStart)/1000;
+  var dt = Math.min(.1, (now - lastT)/1000); lastT = now;
+  var k1 = 1 - Math.exp(-dt*7), k2 = 1 - Math.exp(-dt*3);
+  heroP = reduce ? heroTarget : lerp(heroP, heroTarget, k1);
+  pointerS.x = lerp(pointerS.x, pointer.x, k2); pointerS.y = lerp(pointerS.y, pointer.y, k2);
+  var p = heroP;
+  // fases: 0-.33 caos, .33-.66 resaltar repetitivas, .66-1 orden
+  var hi = ease(clamp((p-.22)/.28,0,1));
+  var order = ease(clamp((p-.6)/.32,0,1));
+  var narrow = window.innerWidth < 760;
+
+  // cámara
+  var camR = lerp(narrow?30:27, narrow?24:21, ease(clamp(p/.6,0,1)));
+  var camY = lerp(narrow?24:19, narrow?20:12, ease(p));
+  var ang = lerp(-0.55, 0.15, ease(p)) + pointerS.x*.08;
+  camera.position.set(Math.sin(ang)*camR, camY + pointerS.y*1.2, Math.cos(ang)*camR);
+  if(narrow) camera.lookAt(0, -5.5 - order*.6, 3); else camera.lookAt(0, 1.2 - order*.6, 1.5);
+
+  for(var i=0;i<N;i++){
+    var c = cells[i];
+    var intro = reduce ? 1 : ease(clamp((t - c.delay)/1.1, 0, 1));
+    var wave = reduce ? 0 : Math.sin(t*1.3 + c.x*.35 + c.z*.25)*.18*(1-order);
+    var hChaos = c.chaos + wave;
+    var hRep = c.rep ? c.chaos + 2.2*hi : c.chaos*(1-.35*hi);
+    var h = lerp(lerp(hChaos, hRep, hi), 1.6, order);
+    h = Math.max(.05, h*intro);
+    dummy.position.set(c.x, 0, c.z);
+    dummy.scale.set(.92, h, .92);
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
+    // color
+    var base = 0x1d4337;
+    if(c.rep){
+      colorObj.set(base).lerp(new THREE.Color(0xF2EFE6), hi*(1-order));
+      if(order>0) colorObj.lerp(new THREE.Color(0x2a5a49), order);
+    } else {
+      colorObj.set(base);
+      if(order>0) colorObj.lerp(new THREE.Color(0x2a5a49), order);
+    }
+    mesh.setColorAt(i, colorObj);
+  }
+  mesh.instanceMatrix.needsUpdate = true;
+  if(mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  renderer.render(scene, camera);
+}
+
+function updateHeroCopy(){
+  var p = heroTarget;
+  var idx = p < .28 ? 0 : (p < .62 ? 1 : 2);
+  for(var i=0;i<frames.length;i++){ frames[i].classList.toggle("on", i===idx); }
+  if(!repCount){ for(var k=0;k<cells.length;k++) if(cells[k].rep) repCount++; if(!repCount) repCount=57; }
+  if(idx===0){ meterNum.textContent="168"; meterLabel.textContent="horas en tu semana"; }
+  else if(idx===1){ meterNum.textContent=String(repCount); meterLabel.textContent="horas en trabajo repetitivo"; }
+  else { meterNum.textContent=String(repCount); meterLabel.textContent="horas que un sistema puede operar"; }
+  cue.style.opacity = p > .05 ? 0 : 1;
+}
+
+/* ================= FLUJO (teléfono 3D) ================= */
+var flow = document.getElementById("flow");
+var phone = document.getElementById("phone");
+var beats = flow.querySelectorAll(".beat");
+var msgs = flow.querySelectorAll(".msg");
+var cardCrm = document.getElementById("cardCrm");
+var cardRep = document.getElementById("cardRep");
+function updateFlow(){
+  var p = sectionProgress(flow);
+  var b = p < .2 ? 0 : p < .45 ? 1 : p < .7 ? 2 : 3;
+  for(var i=0;i<beats.length;i++) beats[i].classList.toggle("on", i===b);
+  for(var j=0;j<msgs.length;j++) msgs[j].classList.toggle("on", p >= parseFloat(msgs[j].dataset.at));
+  cardCrm.classList.toggle("on", p >= .5);
+  cardRep.classList.toggle("on", p >= .74);
+  if(!reduce){
+    var ry = lerp(-26, 16, p), rx = lerp(10, -4, p), rz = lerp(-4, 2, p);
+    phone.style.transform = "rotateY("+ry+"deg) rotateX("+rx+"deg) rotateZ("+rz+"deg)";
+  }
+}
+
+/* ================= PARALLAX ================= */
+var pars = document.querySelectorAll("[data-speed]");
+var drifts = document.querySelectorAll("[data-drift]");
+var sheets = document.querySelectorAll(".sheet");
+var meta = document.getElementById("meta");
+function updateParallax(){
+  var vh = window.innerHeight;
+  for(var i=0;i<pars.length;i++){
+    var el = pars[i], r = el.parentElement.getBoundingClientRect();
+    var off = (r.top + r.height/2 - vh/2);
+    el.style.transform = "translate3d("+(off*parseFloat(el.dataset.speed))+"px,"+(off*parseFloat(el.dataset.speed)*-.25)+"px,0)";
+  }
+  for(var d=0;d<drifts.length;d++){
+    var h = drifts[d], rr = h.getBoundingClientRect();
+    var o = (rr.top - vh/2)/vh;
+    h.style.transform = "translate3d("+(o*parseFloat(h.dataset.drift)*-3)+"px,0,0)";
+  }
+  var mr = meta.getBoundingClientRect();
+  var mp = clamp(1 - (mr.top + mr.height/2)/ (vh + mr.height/2), 0, 1);
+  for(var s=0;s<sheets.length;s++){
+    var dep = parseFloat(sheets[s].dataset.depth);
+    var spread = ease(mp);
+    var sm = window.innerWidth < 900 ? .45 : 1;
+    var tx = (dep-1)*90*spread*sm, ty = (dep-1)*-30*spread*sm, tz = dep*70*spread*sm;
+    var ry = lerp(-8, -26, spread), rx = lerp(4, 16, spread);
+    sheets[s].style.transform = "translate3d("+tx+"px,"+ty+"px,"+tz+"px) rotateY("+ry+"deg) rotateX("+rx+"deg)";
+  }
+}
+
+/* ================= DIALES 8 vs 24 ================= */
+function buildDial(svg){
+  var out = "", cx=100, cy=100, R=78;
+  for(var i=0;i<24;i++){
+    var a0 = (i/24)*Math.PI*2 - Math.PI/2 + .02, a1 = ((i+1)/24)*Math.PI*2 - Math.PI/2 - .02;
+    var x0=cx+R*Math.cos(a0), y0=cy+R*Math.sin(a0), x1=cx+R*Math.cos(a1), y1=cy+R*Math.sin(a1);
+    out += '<path class="seg" d="M'+x0.toFixed(2)+' '+y0.toFixed(2)+' A'+R+' '+R+' 0 0 1 '+x1.toFixed(2)+' '+y1.toFixed(2)+'"/>';
+  }
+  svg.innerHTML = out;
+  return svg.querySelectorAll(".seg");
+}
+var segA = buildDial(document.getElementById("dialA"));
+var segB = buildDial(document.getElementById("dialB"));
+var dA = document.getElementById("dA"), dB = document.getElementById("dB");
+var dialSec = document.getElementById("dial");
+function updateDial(){
+  var r = dialSec.getBoundingClientRect(), vh = window.innerHeight;
+  var p = clamp((vh*.85 - r.top)/(vh*.7), 0, 1);
+  var nA = Math.round(8*ease(p)), nB = Math.round(24*ease(p));
+  for(var i=0;i<24;i++){ segA[i].classList.toggle("lit", i<nA); segB[i].classList.toggle("lit", i<nB); }
+  dA.textContent = nA; dB.textContent = nB;
+}
+
+/* ================= REVEAL ================= */
+var rvs = document.querySelectorAll(".rv");
+if("IntersectionObserver" in window && !reduce){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+  },{threshold:.15, rootMargin:"0px 0px -6% 0px"});
+  rvs.forEach(function(el){io.observe(el);});
+} else { rvs.forEach(function(el){el.classList.add("in");}); }
+
+/* ================= LOOP ================= */
+var ticking = false;
+function onScroll(){
+  heroTarget = sectionProgress(hero);
+  nav.classList.toggle("solid", window.scrollY > window.innerHeight*.5);
+  if(!ticking){ ticking = true; requestAnimationFrame(function(){ ticking=false; updateHeroCopy(); updateFlow(); updateParallax(); updateDial(); }); }
+}
+window.addEventListener("scroll", onScroll, {passive:true});
+window.addEventListener("resize", function(){
+  if(threeOK){ var oldCols = cols; var nn = window.innerWidth < 760 ? 12 : 24; if(nn!==oldCols){ layoutGrid(); repCount=0; } resize(); }
+  onScroll();
+});
+window.addEventListener("pointermove", function(e){
+  pointer.x = (e.clientX/window.innerWidth - .5)*2;
+  pointer.y = (e.clientY/window.innerHeight - .5)*2;
+}, {passive:true});
+
+var heroVisible = true;
+if("IntersectionObserver" in window){
+  new IntersectionObserver(function(es){ heroVisible = es[0].isIntersecting; }).observe(hero);
+}
+function loop(now){
+  if(window.__standP != null) heroTarget = window.__standP;
+  if(threeOK && (heroVisible || window.__standP != null)) renderHero(now);
+  requestAnimationFrame(loop);
+}
+
+threeOK = buildScene();
+if(threeOK){ window.__mx = {T:THREE, scene:scene, camera:camera, renderer:renderer, resize:resize, pointer:pointer, rep:function(){var n=0;for(var i=0;i<cells.length;i++) if(cells[i].rep) n++;return n;}}; }
+if(!threeOK){
+  document.getElementById("scene").style.display="none";
+  layoutGrid();
+}
+onScroll();
+requestAnimationFrame(loop);
+
+/* ================= MEDICIÓN ================= */
+var state = {perfil:null, hrs:8, team:1, tarea:null};
+var panel = document.getElementById("panel");
+var steps = panel.querySelectorAll(".step");
+var bars = panel.querySelectorAll(".progress i");
+var result = document.getElementById("result");
+var cur = 1;
+
+function show(n){
+  cur = n;
+  steps.forEach(function(s){ s.classList.toggle("on", +s.dataset.step===n); });
+  result.classList.toggle("on", n===4);
+  bars.forEach(function(b,i){ b.classList.toggle("done", i < n); });
+  var target = n===4 ? result : panel.querySelector('.step[data-step="'+n+'"]');
+  var first = target && target.querySelector("button, input");
+  if(first && n!==1) setTimeout(function(){ first.focus({preventScroll:true}); }, 60);
+  if(window.innerWidth < 900){ panel.scrollIntoView({behavior: reduce?"auto":"smooth", block:"start"}); }
+}
+function press(group, btn){
+  group.querySelectorAll(".opt").forEach(function(b){ b.setAttribute("aria-pressed", b===btn ? "true":"false"); });
+}
+
+panel.querySelectorAll("[data-perfil]").forEach(function(b){
+  b.addEventListener("click", function(){
+    press(b.parentElement, b);
+    state.perfil = b.dataset.perfil;
+    var q2 = document.getElementById("q2"), help = document.getElementById("hrsHelp");
+    document.getElementById("teamWrap").hidden = state.perfil !== "negocio";
+    if(state.perfil==="estudio"){
+      q2.textContent = "¿Cuántas horas a la semana se van en tareas repetitivas?";
+      help.textContent = "Organizar pendientes, pasar apuntes, contestar mensajes, buscar archivos.";
+    } else {
+      q2.textContent = state.perfil==="negocio" ? "¿Cuántas horas a la semana se van en tareas repetitivas, por persona?" : "¿Cuántas horas a la semana se te van en tareas repetitivas?";
+      help.textContent = "Contestar lo mismo, copiar datos, armar reportes, dar seguimiento.";
+    }
+    setTimeout(function(){ show(2); }, reduce?0:260);
+  });
+});
+var hrs = document.getElementById("hrs"), hrsOut = document.getElementById("hrsOut");
+hrs.addEventListener("input", function(){ state.hrs = +hrs.value; hrsOut.textContent = hrs.value; });
+panel.querySelectorAll("[data-team]").forEach(function(b){
+  b.addEventListener("click", function(){ press(b.parentElement, b); state.team = +b.dataset.team; });
+});
+var calcBtn = document.getElementById("calc");
+panel.querySelectorAll("[data-tarea]").forEach(function(b){
+  b.addEventListener("click", function(){
+    press(b.parentElement, b); state.tarea = b.dataset.tarea;
+    calcBtn.disabled = false; calcBtn.style.opacity = 1;
+    calcBtn.classList.remove("btn-ghost"); calcBtn.classList.add("btn-primary");
+  });
+});
+panel.querySelectorAll("[data-next]").forEach(function(b){ b.addEventListener("click", function(){ show(cur+1); }); });
+panel.querySelectorAll("[data-back]").forEach(function(b){ b.addEventListener("click", function(){ show(cur-1); }); });
+document.getElementById("again").addEventListener("click", function(){
+  state = {perfil:null, hrs:8, team:1, tarea:null};
+  panel.querySelectorAll(".opt").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.team==="1" ? "true":"false"); });
+  hrs.value = 8; hrsOut.textContent = "8";
+  calcBtn.disabled = true; calcBtn.style.opacity=.4; calcBtn.classList.add("btn-ghost"); calcBtn.classList.remove("btn-primary");
+  show(1);
+});
+
+var TAREAS = {
+  mensajes:{n:"contestar mensajes", r:"Un agente de IA responde, resuelve dudas frecuentes y agenda a cualquier hora, con la información real del negocio. Solo pasa a una persona las conversaciones que la necesitan."},
+  captura:{n:"capturar datos", r:"Una integración lleva los datos de formularios, correos y mensajes directo al sistema donde se necesitan. Nadie vuelve a copiar y pegar."},
+  reportes:{n:"hacer reportes", r:"Un tablero que se actualiza solo con los números de la operación. El reporte está listo cuando lo necesitas, sin armarlo a mano."},
+  seguimiento:{n:"dar seguimiento", r:"Un CRM que recuerda cada pendiente y envía el seguimiento en el momento correcto. Ningún cliente se queda esperando."},
+  agenda:{n:"agendar citas", r:"Un asistente ofrece horarios disponibles, confirma y envía recordatorios. Las citas se agendan sin que nadie intervenga."},
+  pendientes:{n:"organizar pendientes", r:"Un flujo que concentra tus pendientes de todos los canales en un solo lugar y te avisa qué sigue. Tú decides, el sistema recuerda."}
+};
+
+var iso = document.getElementById("iso");
+for(var w=0; w<52; w++){ var t = document.createElement("i"); t.className="tile"; iso.appendChild(t); }
+var tiles = iso.querySelectorAll(".tile");
+
+function countUp(el, to){
+  if(reduce){ el.textContent = fmt(to); return; }
+  var s = performance.now(), d = 1400;
+  (function step(now){
+    var k = clamp((now-s)/d,0,1);
+    el.textContent = fmt(to*ease(k));
+    if(k<1) requestAnimationFrame(step);
+  })(s);
+}
+
+calcBtn.addEventListener("click", function(){
+  if(!state.tarea) return;
+  var team = state.perfil==="negocio" ? state.team : 1;
+  var annual = state.hrs * 48 * team;
+  var weeks = annual / 40;
+  var tarea = TAREAS[state.tarea];
+
+  show(4);
+  document.getElementById("rLabel").textContent = state.perfil==="negocio" ? "Tu negocio destina aproximadamente" : "Destinas aproximadamente";
+  countUp(document.getElementById("rNum"), annual);
+
+  var eq;
+  if(weeks >= 52){
+    var people = annual / (40*48);
+    eq = "Equivale al trabajo de tiempo completo de " + (people>=1.95 ? fmt(people)+" personas" : "una persona") + " durante todo el año, solo en tareas que un sistema puede operar.";
+  } else {
+    eq = "Equivale a " + fmt(weeks) + (Math.round(weeks)===1?" semana laboral completa":" semanas laborales completas") + " al año en tareas que un sistema puede operar.";
+  }
+  document.getElementById("rEq").textContent = eq;
+
+  var lit = clamp(Math.round(weeks), 1, 52);
+  tiles.forEach(function(tl){ tl.classList.remove("on"); });
+  tiles.forEach(function(tl,i){ setTimeout(function(){ if(i<lit) tl.classList.add("on"); }, reduce?0:400 + i*28); });
+  document.getElementById("isoLegend").textContent = weeks>=52 ? "52 de 52 semanas del año" : lit+" de 52 semanas laborales del año";
+
+  document.getElementById("recoTitle").textContent = "Cómo se resuelve " + tarea.n;
+  document.getElementById("recoText").textContent = tarea.r;
+
+  var resumen = fmt(annual)+" h al año en "+tarea.n;
+  var row = document.getElementById("ctaRow"), legal = document.getElementById("legal");
+  row.innerHTML = "";
+  function mk(label, href, cls){ var a=document.createElement("a"); a.className="btn "+cls; a.textContent=label; a.href=href; a.target="_blank"; a.rel="noopener"; row.appendChild(a); }
+
+  if(state.perfil==="negocio"){
+    var tm = team===1 ? "solo yo" : team+" personas";
+    mk("Agendar mi diagnóstico", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+" (equipo: "+tm+"). Quiero agendar mi diagnóstico de 30 minutos y participar en el sorteo de implementación.", WA), "btn-primary");
+    legal.textContent = "Al escribirnos por WhatsApp aceptas que Mattera Systems te contacte sobre tu diagnóstico. Participas en el sorteo de un agente de WhatsApp implementado sin costo de instalación, exclusivo para negocios.";
+  } else if(state.perfil==="trabajo"){
+    mk("Enviárselo a quien decide", waLink("Medí cuántas horas se van en trabajo repetitivo en mi puesto: "+resumen+". Mattera Systems automatiza esto con IA en 14 días. Diagnóstico de 30 minutos: wa.me/"+WA), "btn-primary");
+    mk("Escribir a Mattera", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+". Me interesa llevar esto a la empresa donde trabajo.", WA), "btn-ghost");
+    legal.textContent = "El primer botón abre WhatsApp para que elijas a quién enviarlo. Al escribirnos aceptas que Mattera Systems te contacte.";
+  } else {
+    mk("Recibir la guía de IA", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+". Quiero la guía de 10 herramientas de IA para operar un negocio de una persona.", WA), "btn-primary");
+    legal.textContent = "Te enviamos la guía por WhatsApp. Si eres menor de edad, solo usaremos tu número para enviarte la guía.";
+  }
+});
+
+/* ---------- CTA web y diagnóstico ---------- */
+document.getElementById("webCta").href = waLink("Hola, Mattera. Vi su página en Connect Zapopan y quiero una página así para mi negocio.", WA);
+document.getElementById("diagCta").href = waLink("Hola, Mattera. Quiero agendar un diagnóstico de 30 minutos.", WA);
+})();
+</script>
+<style>
+/* ---------- Extras 3D ---------- */
+.x-progress{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--salvia);transform-origin:0 50%;scale:0 1;z-index:60;pointer-events:none}
+.x-svc3d{height:340px;margin:0 0 4vh}
+.x-svc3d canvas{width:100%;height:100%;display:block}
+.timeline .x-fill{position:absolute;left:0;right:0;top:22px;height:2px;background:var(--bosque);transform-origin:0 50%;scale:0 1;z-index:1}
+.timeline .x-cube{position:absolute;top:13px;left:0;width:20px;height:20px;margin-left:-10px;transform-style:preserve-3d;z-index:2}
+.x-cube-in{position:absolute;inset:0;transform-style:preserve-3d}
+.x-cube-in i{position:absolute;inset:0;background:var(--naranja);border:1px solid var(--bosque)}
+.x-cube-in i:nth-child(1){transform:translateZ(10px)}.x-cube-in i:nth-child(2){transform:rotateY(180deg) translateZ(10px)}
+.x-cube-in i:nth-child(3){transform:rotateY(90deg) translateZ(10px);background:#d98a0a}.x-cube-in i:nth-child(4){transform:rotateY(-90deg) translateZ(10px);background:#d98a0a}
+.x-cube-in i:nth-child(5){transform:rotateX(90deg) translateZ(10px);background:#ffc04d}.x-cube-in i:nth-child(6){transform:rotateX(-90deg) translateZ(10px)}
+.tstep{transform-origin:50% 0;will-change:transform}
+.close{overflow:hidden}
+.close .x-close3d{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.close .x-close3d.on{opacity:1}
+.close .x-close3d canvas{width:100%;height:100%;display:block}
+.close .wrap{position:relative;z-index:1}
+@media (max-width:900px){.timeline .x-fill,.timeline .x-cube{display:none}.x-svc3d{height:240px}}
+
+/* ---------- Modo stand ---------- */
+.stand{display:none}
+body.standing{overflow:hidden;cursor:default}
+body.standing.idle{cursor:none}
+body.standing .nav,body.standing .hero-copy,body.standing .hero-meter,body.standing .scroll-cue,body.standing .x-progress{display:none}
+body.standing main > section:not(.hero){display:none}
+body.standing .hero{height:100vh;height:100svh}
+body.standing .stand{display:block;position:fixed;inset:0;z-index:40;pointer-events:none}
+.stand-panel{position:absolute;left:clamp(24px,4vw,72px);top:50%;transform:translateY(-50%);width:min(40vw,640px);padding:clamp(28px,3vw,52px);
+  background:rgba(12,33,27,.86);border:1px solid var(--linea);border-radius:32px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:auto}
+.stand-brand{display:flex;align-items:center;gap:14px;margin-bottom:clamp(20px,3vh,40px)}
+.stand-brand svg{width:52px;height:40px;color:var(--hueso)}
+.stand-brand span{font-family:var(--serif);font-size:clamp(20px,1.6vw,28px)}
+.stand-q{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.4vw,64px);line-height:1.04;letter-spacing:-.02em;margin:0 0 18px;font-variation-settings:"opsz" 144}
+.stand-sub{color:var(--salvia);font-size:clamp(16px,1.25vw,22px);margin:0 0 clamp(20px,3vh,36px);max-width:30ch}
+.stand-qr-row{display:flex;align-items:flex-end;gap:24px}
+.stand-qr{position:relative;width:clamp(180px,15vw,280px);aspect-ratio:1;background:var(--hueso);border-radius:22px;padding:14px}
+.stand-qr svg{width:100%;height:100%;display:block}
+.stand-qr .tab{position:absolute;left:50%;top:-14px;transform:translateX(-50%);background:var(--naranja);color:var(--bosque);font:600 14px/1 var(--sans);padding:8px 14px;border-radius:999px;white-space:nowrap}
+.stand-url{font-family:var(--mono);font-size:13px;color:var(--salvia);word-break:break-all;max-width:22ch}
+.stand-cap{position:absolute;right:clamp(24px,4vw,72px);bottom:clamp(24px,5vh,64px);text-align:right;max-width:min(44vw,720px)}
+.stand-cap .clock{font-family:var(--mono);font-size:clamp(14px,1.1vw,18px);color:var(--salvia);margin:0 0 8px}
+.stand-cap h2{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3vw,56px);line-height:1.05;letter-spacing:-.02em;margin:0;transition:opacity .6s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+  text-shadow:0 2px 24px rgba(12,33,27,.9)}
+.stand-cap h2.out{opacity:0;transform:translateY(16px)}
+.stand-meter{position:absolute;right:clamp(24px,4vw,72px);top:clamp(24px,5vh,56px);text-align:right;font-family:var(--mono);color:var(--salvia);font-size:14px;line-height:1.6}
+.stand-meter b{display:block;font-weight:400;color:var(--hueso);font-size:clamp(40px,4vw,72px);line-height:1}
+.stand-ui{position:absolute;left:clamp(24px,4vw,72px);bottom:16px;display:flex;gap:10px;align-items:center;pointer-events:auto;transition:opacity .4s}
+body.standing.idle .stand-ui{opacity:0}
+.stand-ui button,.stand-ui input{font:500 13px var(--sans);color:var(--hueso);background:rgba(20,50,41,.9);border:1px solid var(--linea);border-radius:999px;padding:9px 14px}
+.stand-ui input{width:min(34vw,380px);font-family:var(--mono)}
+.stand-ui button{cursor:pointer}
+@media (max-width:900px) and (orientation:portrait){
+  .stand-panel{left:16px;right:16px;width:auto;top:auto;bottom:16px;transform:none}
+  .stand-cap{display:none}
+}
+
+/* ================= DEMOS ================= */
+.demos{padding:16vh 0 14vh;background:var(--bosque)}
+.demos-head{display:flex;justify-content:space-between;align-items:end;gap:40px;flex-wrap:wrap;margin-bottom:5vh}
+.demos-head .h2{margin:0;max-width:16ch}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 14px;margin-bottom:28px;scrollbar-width:none;border-bottom:1px solid var(--linea)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;font:500 15px var(--sans);color:var(--salvia);background:transparent;border:1px solid var(--linea);border-radius:999px;padding:12px 18px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.tabs button:hover{color:var(--hueso);border-color:var(--salvia)}
+.tabs button[aria-selected="true"]{background:var(--hueso);color:var(--bosque);border-color:var(--hueso)}
+.tabpanel{animation:stepIn .5s cubic-bezier(.2,.7,.2,1)}
+.demo-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,72px);align-items:start}
+.demo-copy .kicker{font-family:var(--mono);font-size:13px;color:var(--salvia);margin:0 0 10px}
+.demo-copy h3{font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.2vw,44px);line-height:1.06;letter-spacing:-.015em;margin:0 0 16px}
+.demo-copy p{color:var(--salvia);margin:0 0 14px;max-width:46ch}
+.demo-copy.wide{max-width:none;margin-bottom:26px}
+.demo-copy.wide p{max-width:60ch}
+.hint{font-size:14px}
+.task-pick{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.opt-pill{font:500 14px var(--sans);color:var(--hueso);background:transparent;border:1px solid var(--linea);border-radius:999px;padding:10px 16px;cursor:pointer}
+.opt-pill:hover{border-color:var(--salvia)}
+.opt-pill[aria-pressed="true"]{background:var(--alterno);border-color:var(--salvia)}
+.mono{font-family:var(--mono)}
+
+/* WhatsApp */
+.wa{background:#0a1c17;border:1px solid var(--linea);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;height:560px;max-height:75vh}
+.wa-head,.ag-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--linea);background:var(--alterno)}
+.wa-head b,.ag-head b{display:block;font:600 15px var(--sans)}
+.wa-head small,.ag-head small{font-size:12.5px;color:var(--salvia)}
+.wa-body,.ag-body{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:8px;scroll-behavior:smooth}
+.bub{max-width:84%;font-size:14.5px;line-height:1.45;padding:10px 13px;border-radius:16px;animation:bubIn .35s cubic-bezier(.2,.8,.2,1);white-space:pre-line}
+.bub.me{align-self:flex-end;background:var(--hueso);color:var(--bosque);border-bottom-right-radius:5px}
+.bub.bot{align-self:flex-start;background:var(--alterno);border-bottom-left-radius:5px}
+.bub time{display:block;font-family:var(--mono);font-size:10.5px;opacity:.55;margin-top:4px}
+.bub .tag{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:11px;padding:4px 8px;border-radius:6px;background:var(--bosque);color:var(--salvia)}
+.bub.me .tag{background:rgba(12,33,27,.1);color:var(--tinta-sec)}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;background:var(--alterno);border-radius:16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--salvia);animation:dot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@keyframes bubIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.wa-chips,.ag-chips{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;scrollbar-width:none}
+.wa-chips::-webkit-scrollbar,.ag-chips::-webkit-scrollbar{display:none}
+.wa-chips button,.ag-chips button{flex:0 0 auto;font:500 13.5px var(--sans);color:var(--hueso);background:transparent;border:1px solid var(--linea);border-radius:999px;padding:9px 14px;cursor:pointer}
+.wa-chips button:hover,.ag-chips button:hover{border-color:var(--salvia)}
+.wa-input,.ag-input{display:flex;gap:8px;padding:10px 12px 14px;border-top:1px solid var(--linea)}
+.wa-input input,.ag-input input{flex:1;min-width:0;font:400 15px var(--sans);color:var(--hueso);background:var(--bosque);border:1px solid var(--linea);border-radius:999px;padding:12px 16px}
+.wa-input input:focus,.ag-input input:focus{outline:none;border-color:var(--salvia)}
+.wa-input button,.ag-input button{font:600 14px var(--sans);color:var(--bosque);background:var(--hueso);border:0;border-radius:999px;padding:0 16px;cursor:pointer}
+
+/* Agente: ejecución */
+.agent-run{background:var(--alterno);border:1px solid var(--linea);border-radius:28px;padding:clamp(20px,3vw,32px);min-height:460px}
+.run-head{display:flex;justify-content:space-between;font-size:13px;color:var(--salvia);padding-bottom:16px;border-bottom:1px solid var(--linea);margin-bottom:16px}
+.run-time{color:var(--hueso)}
+.run-steps{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.run-steps li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--linea);border-radius:14px;opacity:.38;transition:opacity .3s,border-color .3s,background .3s}
+.run-steps li.on{opacity:1;border-color:var(--salvia)}
+.run-steps li.done{opacity:1;background:rgba(12,33,27,.55)}
+.run-steps .ic{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--salvia);display:grid;place-items:center;font:600 12px var(--mono);color:var(--salvia)}
+.run-steps li.on .ic{border-color:var(--hueso);color:var(--hueso);animation:pulse 1s infinite}
+.run-steps li.done .ic{background:var(--hueso);border-color:var(--hueso);color:var(--bosque)}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.run-steps b{display:block;font:600 14.5px var(--sans)}
+.run-steps small{display:block;color:var(--salvia);font-size:13px;margin-top:2px}
+.run-steps .tool{font-family:var(--mono);font-size:11.5px;color:var(--salvia);white-space:nowrap}
+.run-out{margin-top:16px;padding:16px 18px;border-radius:16px;background:var(--papel);color:var(--bosque);font-size:14px;animation:bubIn .5s}
+.run-out h5{margin:0 0 8px;font:600 12px var(--sans);color:var(--tinta-sec);text-transform:none}
+.run-out .row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(12,33,27,.12);padding:6px 0}
+.run-out .row:first-of-type{border-top:0}
+
+/* CRM */
+.kanban{user-select:none;-webkit-user-select:none;display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px;overflow-x:auto;padding-bottom:8px}
+.col{background:var(--alterno);border:1px solid var(--linea);border-radius:20px;padding:14px;min-height:320px;transition:border-color .2s,background .2s}
+.col.over{border-color:var(--hueso);background:#18392f}
+.col h4{display:flex;justify-content:space-between;margin:0 0 12px;font:600 14px var(--sans)}
+.col h4 span{color:var(--salvia);font-weight:400}
+.drop{display:grid;gap:10px;min-height:260px;align-content:start}
+.card{background:var(--bosque);border:1px solid var(--linea);border-radius:14px;padding:12px 14px;cursor:grab;touch-action:none;user-select:none;transition:transform .2s,box-shadow .2s,border-color .2s}
+.card:hover{border-color:var(--salvia)}
+.card.drag{cursor:grabbing;box-shadow:0 24px 50px rgba(0,0,0,.5);border-color:var(--hueso);position:fixed;z-index:80;pointer-events:none;rotate:2deg}
+.card.ph{opacity:.25}
+.card.new{animation:cardIn .7s cubic-bezier(.2,.9,.2,1.15)}
+@keyframes cardIn{from{opacity:0;transform:translateY(-30px) scale(.9)}to{opacity:1;transform:none}}
+.card b{display:block;font:600 14.5px var(--sans)}
+.card small{display:flex;justify-content:space-between;color:var(--salvia);font-size:12.5px;margin-top:4px}
+.card .src{font-family:var(--mono);font-size:11px;color:var(--salvia);margin-top:8px;display:block}
+.crm-detail{margin-top:16px;background:var(--papel);color:var(--bosque);border-radius:20px;padding:20px 22px;animation:bubIn .4s}
+.crm-detail h5{margin:0 0 4px;font:600 16px var(--sans)}
+.crm-detail ol{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.crm-detail li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;font-size:14px;border-top:1px solid rgba(12,33,27,.12);padding-top:8px}
+.crm-detail li span{font-family:var(--mono);font-size:12px;color:var(--tinta-sec)}
+
+/* Integraciones */
+.flowmap{background:var(--alterno);border:1px solid var(--linea);border-radius:28px;padding:18px}
+.flowmap svg{width:100%;height:auto;display:block}
+.flowmap .lines path{fill:none;stroke:rgba(143,168,156,.3);stroke-width:2;stroke-dasharray:5 6}
+.flowmap .lines path.hot{stroke:var(--hueso);stroke-dasharray:none;transition:stroke .3s}
+.flowmap .nodes rect{fill:var(--bosque);stroke:rgba(143,168,156,.4);transition:fill .3s,stroke .3s}
+.flowmap .nodes text{fill:var(--hueso);font:500 12.5px var(--sans);text-anchor:middle}
+.flowmap .nodes g.lit rect{fill:var(--hueso);stroke:var(--hueso)}
+.flowmap .nodes g.lit text{fill:var(--bosque)}
+.flowmap .hub circle{fill:var(--bosque);stroke:var(--hueso);stroke-width:1.5}
+.flowmap .hub use{color:var(--hueso)}
+.flowmap .hub.spin circle{animation:hubp .6s ease}
+@keyframes hubp{50%{r:44}}
+.flowmap #packets circle{fill:var(--naranja)}
+.int-log{list-style:none;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--linea);font-size:12.5px;color:var(--salvia);display:grid;gap:6px;min-height:96px}
+.int-log li{animation:bubIn .35s}
+.int-log li b{color:var(--hueso);font-weight:500}
+
+/* Reportes */
+.dash{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--alterno);border:1px solid var(--linea);border-radius:20px;padding:18px 20px}
+.kpi span{display:block;color:var(--salvia);font-size:13.5px;margin-bottom:10px}
+.kpi b{font-weight:400;font-size:clamp(28px,3vw,40px);line-height:1}
+.chart{grid-column:1/-1;background:var(--alterno);border:1px solid var(--linea);border-radius:20px;padding:18px 20px 12px}
+.chart svg{width:100%;height:220px;display:block}
+.chart rect{fill:#2a5a49;transition:height .7s cubic-bezier(.2,.8,.2,1),y .7s cubic-bezier(.2,.8,.2,1)}
+.chart rect.peak{fill:var(--hueso)}
+.chart-x{display:flex;justify-content:space-around;font-size:11.5px;color:var(--salvia);margin-top:8px}
+
+/* Sitio web */
+.plans{display:grid;gap:8px;margin:22px 0 12px}
+.plans div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 14px;border:1px solid var(--linea);border-radius:14px}
+.plans b{font:600 14.5px var(--sans)}
+.plans span{font-size:15px}
+.plans small{grid-column:1/-1;color:var(--salvia);font-size:13px}
+.browser{background:var(--papel);border-radius:18px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45);margin:0 auto;width:100%;max-width:720px;transition:max-width .6s cubic-bezier(.2,.8,.2,1),border-radius .6s;color:var(--bosque)}
+.browser[data-view="mob"]{max-width:320px;border-radius:30px}
+.b-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#e3e4d8}
+.b-bar i{width:9px;height:9px;border-radius:50%;background:rgba(12,33,27,.2)}
+.b-bar span{margin-left:10px;font-size:11.5px;color:var(--tinta-sec)}
+.b-page{position:relative;padding:18px 22px 26px;min-height:400px}
+.b-nav{display:flex;gap:16px;align-items:center;font-size:13px;color:var(--tinta-sec)}
+.b-nav b{color:var(--bosque);margin-right:auto;font-family:var(--serif);font-size:17px}
+.browser[data-view="mob"] .b-nav span{display:none}
+.b-hero{padding:46px 0 26px}
+.b-hero h4{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2.6vw,34px);line-height:1.1;margin:0 0 10px;max-width:16ch}
+.b-hero p{font-size:14px;color:var(--tinta-sec);margin:0 0 18px}
+.b-btn{display:inline-block;background:var(--bosque);color:var(--papel);font:600 13px var(--sans);padding:11px 18px;border-radius:999px}
+.b-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.browser[data-view="mob"] .b-cards{grid-template-columns:1fr}
+.b-cards div{height:80px;border-radius:12px;background:rgba(12,33,27,.08)}
+.b-bubble{position:absolute;right:16px;bottom:16px;width:52px;height:52px;border-radius:50%;border:0;background:var(--bosque);display:grid;place-items:center;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.3);animation:bob 2.4s ease-in-out infinite}
+.b-bubble svg{width:24px;height:18px;color:var(--papel)}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.b-chat{position:absolute;right:16px;bottom:80px;width:min(260px,80%);background:#fff;border-radius:16px;padding:12px;box-shadow:0 20px 50px rgba(0,0,0,.25);display:grid;gap:6px;font-size:12.5px;animation:bubIn .35s}
+.b-chat p{margin:0;padding:8px 10px;border-radius:12px;max-width:88%}
+.b-chat .in{background:#eef0e6}
+.b-chat .out{background:var(--bosque);color:var(--papel);justify-self:end}
+
+.demos-cta{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:9vh;padding:clamp(22px,3vw,34px);border:1px solid var(--linea);border-radius:24px}
+.demos-cta p{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);line-height:1.2;margin:0;max-width:28ch}
+
+/* ================= AGENTE ================= */
+.ag-fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:70;display:flex;align-items:center;gap:10px;font:600 15px var(--sans);color:var(--bosque);background:var(--hueso);border:0;border-radius:999px;padding:14px 20px 14px 16px;cursor:pointer;box-shadow:0 18px 40px rgba(0,0,0,.4);transition:transform .2s}
+.ag-fab:hover{transform:translateY(-2px)}
+.ag-fab svg{width:24px;height:18px;color:var(--bosque)}
+.ag-panel{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:75;width:min(400px,calc(100vw - 36px));height:min(620px,calc(100svh - 120px));background:#0a1c17;border:1px solid var(--linea);border-radius:26px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55);animation:panelIn .4s cubic-bezier(.2,.8,.2,1)}
+.ag-panel[hidden]{display:none}
+@keyframes panelIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.ag-head .avatar{flex:0 0 auto}
+.ag-x{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--hueso);font-size:22px;line-height:1;cursor:pointer}
+.calc-card{align-self:stretch;max-width:100%;background:var(--papel);color:var(--bosque);border-radius:18px;padding:16px 18px;animation:bubIn .5s}
+.calc-card h5{margin:0 0 10px;font:600 12.5px var(--sans);color:var(--tinta-sec)}
+.calc-card .big{font-family:var(--mono);font-size:34px;line-height:1;margin:0 0 4px}
+.calc-card .big small{font-size:14px;color:var(--tinta-sec);margin-left:6px}
+.calc-card .row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid rgba(12,33,27,.12);padding:7px 0;font-size:13.5px}
+.calc-card .row span:last-child{font-family:var(--mono)}
+.calc-card .note{font-size:11.5px;color:var(--tinta-sec);margin:10px 0 0;line-height:1.45}
+.calc-card a{display:inline-block;margin-top:12px;background:var(--naranja);color:var(--bosque);font:600 14px var(--sans);text-decoration:none;padding:11px 16px;border-radius:999px}
+body.standing .ag-fab,body.standing .ag-panel{display:none}
+
+@media (max-width:900px){
+  .demo-grid{grid-template-columns:minmax(0,1fr)}
+  .dash{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wa{height:520px}
+  .agent-run{min-height:0}
+  .ag-fab span{display:none}
+  .ag-fab{padding:14px}
+  .ag-panel{right:0;left:0;bottom:0;width:100%;height:min(88svh,680px);border-radius:24px 24px 0 0}
+  .run-steps li{grid-template-columns:28px minmax(0,1fr)}
+  .run-steps .tool{grid-column:2}
+}
+
+</style>
+
+<div class="x-progress" id="xProgress" aria-hidden="true"></div>
+
+<div class="stand" id="stand" aria-label="Modo stand">
+  <div class="stand-meter" aria-hidden="true"><b id="standNum">168</b><span id="standLbl">horas en tu semana</span></div>
+  <div class="stand-panel">
+    <div class="stand-brand"><svg aria-hidden="true"><use href="#mattera-logo"/></svg><span>Mattera Systems</span></div>
+    <h1 class="stand-q">¿Cuántas horas a la semana se te van en trabajo repetitivo?</h1>
+    <p class="stand-sub">Escanea y mídelo en 60 segundos. Nuestro agente de IA atiende a todos los que están aquí al mismo tiempo.</p>
+    <div class="stand-qr-row">
+      <div class="stand-qr"><span class="tab">Escanea aquí</span><div id="standQr"></div></div>
+      <p class="stand-url" id="standUrl"></p>
+    </div>
+  </div>
+  <div class="stand-cap"><p class="clock" id="standClock"></p><h2 id="standCap">Tu semana tiene 168 horas.</h2></div>
+  <div class="stand-ui">
+    <button type="button" id="standFs">Pantalla completa</button>
+    <input type="url" id="standQrInput" aria-label="Dirección a la que lleva el QR" placeholder="https://tu-dominio/connect">
+    <button type="button" id="standExit">Salir</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function(){
+"use strict";
+var LOGO = [[[0.48, 23.3], [0.0, 24.88], [0.0, 63.39], [0.95, 65.61], [3.17, 67.51], [4.6, 69.1], [6.97, 71.0], [8.72, 71.32], [10.3, 70.68], [26.47, 56.26], [27.73, 56.26], [33.91, 62.28], [39.78, 67.51], [46.75, 74.33], [48.97, 75.91], [50.87, 75.91], [52.14, 75.28], [67.99, 60.38], [71.0, 57.21], [72.27, 56.26], [73.38, 56.26], [79.87, 62.12], [83.84, 65.29], [88.11, 69.41], [90.17, 71.0], [91.76, 71.32], [93.5, 70.68], [98.1, 66.56], [99.52, 64.66], [99.84, 63.39], [99.68, 23.93], [98.42, 21.87], [93.34, 16.48], [80.82, 3.96], [77.65, 0.48], [76.7, 0.0], [74.96, 0.0], [73.06, 1.27], [49.92, 25.04], [47.07, 22.35], [43.26, 18.07], [37.72, 12.52], [37.88, 12.36], [37.72, 12.52], [37.24, 12.2], [29.95, 4.44], [26.15, 0.63], [25.04, 0.0], [23.3, 0.0], [22.03, 0.63], [5.86, 17.43], [2.22, 20.92]], [[10.46, 27.73], [11.25, 26.47], [23.45, 13.79], [24.56, 13.79], [46.91, 36.93], [48.81, 38.19], [50.87, 38.19], [51.82, 37.88], [53.88, 35.97], [66.24, 22.98], [73.69, 15.53], [74.48, 14.42], [75.28, 13.79], [76.39, 13.79], [81.77, 19.18], [83.68, 21.55], [87.48, 25.2], [89.22, 27.42], [89.54, 49.13], [89.38, 56.26], [88.91, 56.26], [87.64, 54.99], [87.32, 54.99], [74.33, 43.42], [72.74, 42.79], [72.11, 42.79], [70.21, 43.74], [50.08, 63.07], [49.76, 63.07], [39.3, 53.09], [39.46, 52.93], [39.14, 53.09], [30.59, 44.69], [28.68, 43.11], [27.26, 42.79], [25.99, 43.11], [25.04, 43.74], [13.31, 54.36], [11.57, 55.63], [10.78, 56.58], [10.46, 56.58]]];
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};
+var lerp=function(a,b,t){return a+(b-a)*t;};
+var easeIO=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;};
+var easeOut=function(t){return 1-Math.pow(1-t,3);};
+function rand(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+function kOf(node,a,b){var r=node.getBoundingClientRect(),vh=window.innerHeight;return clamp((vh*a-r.top)/(vh*(a-b)),0,1);}
+var ptr={x:0,y:0},ps={x:0,y:0};
+window.addEventListener("pointermove",function(e){ptr.x=(e.clientX/innerWidth-.5)*2;ptr.y=(e.clientY/innerHeight-.5)*2;},{passive:true});
+
+/* ---------- logo 3D extruido ---------- */
+function makeLogo(T,size,depth){
+  var toV=function(p){return new T.Vector2((p[0]-50)/100*size,-(p[1]-38.03)/100*size);};
+  var a=LOGO.map(function(poly){return poly.map(toV);});
+  var areas=a.map(function(pts){return Math.abs(T.ShapeUtils.area(pts));});
+  var oi=areas[0]>areas[1]?0:1, hi=1-oi;
+  var outer=a[oi]; if(T.ShapeUtils.isClockWise(outer)) outer=outer.slice().reverse();
+  var hole=a[hi]; if(!T.ShapeUtils.isClockWise(hole)) hole=hole.slice().reverse();
+  var shape=new T.Shape(outer); shape.holes.push(new T.Path(hole));
+  var geo=new T.ExtrudeGeometry(shape,{depth:depth,bevelEnabled:true,bevelThickness:depth*.18,bevelSize:size*.012,bevelSegments:3,curveSegments:4});
+  geo.center();
+  return new T.Mesh(geo,new T.MeshStandardMaterial({color:0xF2EFE6,roughness:.42,metalness:.06}));
+}
+
+/* ---------- progreso ---------- */
+var prog=document.getElementById("xProgress");
+
+/* ---------- proceso: relleno y cubo ---------- */
+var tl=document.querySelector(".timeline"), fill, cube, cubeIn, steps=[];
+if(tl){
+  fill=document.createElement("div"); fill.className="x-fill"; fill.setAttribute("aria-hidden","true");
+  cube=document.createElement("div"); cube.className="x-cube"; cube.setAttribute("aria-hidden","true");
+  cube.innerHTML='<div class="x-cube-in"><i></i><i></i><i></i><i></i><i></i><i></i></div>';
+  cubeIn=cube.firstChild; tl.appendChild(fill); tl.appendChild(cube);
+  tl.style.perspective="1400px";
+  steps=Array.prototype.slice.call(tl.querySelectorAll(".tstep"));
+}
+
+function onFrame(now){
+  requestAnimationFrame(onFrame);
+  if(document.body.classList.contains("standing")) return;
+  var vh=innerHeight, de=document.documentElement;
+  prog.style.scale=clamp(scrollY/Math.max(1,de.scrollHeight-vh),0,1).toFixed(4)+" 1";
+  if(reduce) return;
+  if(tl && tl.getBoundingClientRect().top<vh && tl.getBoundingClientRect().bottom>0){
+    var k=kOf(tl,.9,.35);
+    fill.style.scale=k.toFixed(4)+" 1";
+    cube.style.left=(k*100).toFixed(2)+"%";
+    cubeIn.style.transform="rotateX("+(-25+k*360).toFixed(1)+"deg) rotateY("+(35+k*540).toFixed(1)+"deg)";
+    steps.forEach(function(s,i){
+      var kk=easeOut(clamp(kOf(tl,1-i*.06,.45-i*.06),0,1));
+      s.style.transform="rotateX("+((1-kk)*70).toFixed(2)+"deg) translateY("+((1-kk)*60).toFixed(1)+"px)";
+      s.style.opacity=(.2+.8*kk).toFixed(3);
+    });
+  }
+
+}
+requestAnimationFrame(onFrame);
+
+/* ---------- servicios: seis piezas que se vuelven un sistema ---------- */
+function initSvc(T){
+  var host=document.getElementById("svc3d"); if(!host) return;
+  var canvas=document.createElement("canvas"); host.appendChild(canvas);
+  var r; try{ r=new T.WebGLRenderer({canvas:canvas,antialias:true,alpha:true}); }catch(e){return;}
+  r.setPixelRatio(Math.min(devicePixelRatio||1,2)); r.setClearColor(0,0);
+  var scene=new T.Scene(), cam=new T.PerspectiveCamera(30,1,.1,100);
+  scene.add(new T.HemisphereLight(0xF2EFE6,0x0C211B,.85));
+  var key=new T.DirectionalLight(0xFFF4E2,1.35); key.position.set(-5,9,6); scene.add(key);
+  var rim=new T.DirectionalLight(0x8FA89C,.6); rim.position.set(6,3,-6); scene.add(rim);
+  var group=new T.Group(); scene.add(group);
+  var colors=[0x1d4337,0x2a5a49,0xF2EFE6,0x1d4337,0x2a5a49,0x1d4337], pieces=[];
+  for(var i=0;i<6;i++){
+    var g=new T.BoxGeometry(1.5,1,1.5);
+    var m=new T.Mesh(g,new T.MeshStandardMaterial({color:colors[i],roughness:.6,metalness:.05}));
+    m.add(new T.LineSegments(new T.EdgesGeometry(g),new T.LineBasicMaterial({color:0x8FA89C,transparent:true,opacity:.6})));
+    var col=i%3,row=Math.floor(i/3),a=i/6*Math.PI*2;
+    pieces.push({m:m,f:{x:Math.cos(a)*4.4,y:.8+rand(i+3)*2.4,z:Math.sin(a)*2.6,rx:rand(i)*2-1,ry:rand(i+9)*3,rz:rand(i+5)-.5,sy:.6+rand(i+2)*1.6},o:{x:(col-1)*1.56,z:(row-.5)*1.56,sy:.45}});
+    group.add(m);
+  }
+  var base=new T.Mesh(new T.BoxGeometry(5,.12,3.4),new T.MeshStandardMaterial({color:0x143229,roughness:.8}));
+  base.position.y=-.08; group.add(base);
+  var logo=makeLogo(T,1.9,.28); logo.scale.setScalar(.001); group.add(logo);
+  function size(){var w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.position.set(0,cam.aspect<1.4?8:6.2,cam.aspect<1.4?11:8.6);cam.lookAt(0,.4,0);cam.updateProjectionMatrix();}
+  size(); addEventListener("resize",size,{passive:true});
+  var vis=false,k=0,last=performance.now();
+  new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(host);
+  (function f(now){
+    requestAnimationFrame(f); if(!vis){last=now;return;}
+    var dt=Math.min(.1,(now-last)/1000); last=now;
+    ps.x=lerp(ps.x,ptr.x,1-Math.exp(-dt*3)); ps.y=lerp(ps.y,ptr.y,1-Math.exp(-dt*3));
+    k=lerp(k,reduce?1:easeIO(kOf(host,1,.3)),1-Math.exp(-dt*5));
+    var t=now/1000;
+    pieces.forEach(function(p,i){
+      var fl=Math.sin(t*1.3+i)*.2*(1-k);
+      p.m.position.set(lerp(p.f.x,p.o.x,k),lerp(p.f.y,0,k)+fl+lerp(0,p.o.sy/2,k),lerp(p.f.z,p.o.z,k));
+      p.m.rotation.set(lerp(p.f.rx+t*.3*(1-k),0,k),lerp(p.f.ry+t*.4*(1-k),0,k),lerp(p.f.rz,0,k));
+      p.m.scale.y=lerp(p.f.sy,p.o.sy,k);
+    });
+    base.scale.set(Math.max(.001,k),1,Math.max(.001,k));
+    var lk=easeOut(clamp((k-.75)/.25,0,1)); logo.scale.setScalar(Math.max(.001,lk)); logo.position.set(0,1.9+Math.sin(t*1.6)*.1,0);
+    logo.rotation.set(0,-group.rotation.y+Math.sin(t*.8)*.35,0);
+    group.rotation.y=-.5+ps.x*.25+t*.08*(1-k)+k*.35; group.rotation.x=ps.y*.08;
+    r.render(scene,cam);
+  })(performance.now());
+}
+
+/* ---------- cierre: campo de bloques + logo 3D ---------- */
+function initClose(T){
+  var sec=document.getElementById("close"); if(!sec) return;
+  var wrap=document.createElement("div"); wrap.className="x-close3d"; wrap.setAttribute("aria-hidden","true");
+  var canvas=document.createElement("canvas"); wrap.appendChild(canvas); sec.insertBefore(wrap,sec.firstChild);
+  var r; try{ r=new T.WebGLRenderer({canvas:canvas,antialias:true,alpha:true}); }catch(e){wrap.remove();return;}
+  var narrow=innerWidth<900;
+  r.setPixelRatio(Math.min(devicePixelRatio||1,narrow?1.5:2)); r.setClearColor(0,0);
+  var scene=new T.Scene(), cam=new T.PerspectiveCamera(38,1,.1,200);
+  scene.add(new T.HemisphereLight(0xF2EFE6,0x0C211B,.75));
+  var key=new T.DirectionalLight(0xFFF4E2,1.25); key.position.set(-10,18,12); scene.add(key);
+  var rim=new T.DirectionalLight(0x8FA89C,.5); rim.position.set(12,6,-10); scene.add(rim);
+  var cols=narrow?14:30, rows=12, N=cols*rows, gap=1.15;
+  var geo=new T.BoxGeometry(1,1,1); geo.translate(0,.5,0);
+  var mesh=new T.InstancedMesh(geo,new T.MeshStandardMaterial({color:0xffffff,roughness:.65}),N);
+  mesh.instanceMatrix.setUsage(T.DynamicDrawUsage); scene.add(mesh);
+  var d=new T.Object3D(), c1=new T.Color(0x0f2a22), c2=new T.Color(0x1d4337), col=new T.Color(), cells=[];
+  for(var i=0;i<N;i++){var c=i%cols,rr=Math.floor(i/cols);cells.push({x:(c-(cols-1)/2)*gap,z:(rr-(rows-1)/2)*gap+2,h:.3+rand(i+21)*2.6});mesh.setColorAt(i,c1);}
+  var logo=makeLogo(T,narrow?2.4:3.4,.45); scene.add(logo);
+  function size(){var w=sec.clientWidth,h=sec.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
+  size(); addEventListener("resize",size,{passive:true});
+  var vis=false,k=0,last=performance.now();
+  new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(sec);
+  (function f(now){
+    requestAnimationFrame(f); if(!vis){last=now;return;}
+    var dt=Math.min(.1,(now-last)/1000); last=now;
+    ps.x=lerp(ps.x,ptr.x,1-Math.exp(-dt*3)); ps.y=lerp(ps.y,ptr.y,1-Math.exp(-dt*3));
+    k=lerp(k,reduce?1:easeIO(kOf(sec,1,.25)),1-Math.exp(-dt*4));
+    var t=now/1000;
+    cam.position.set(ps.x*1.4,lerp(15,9,k)-ps.y*.8,lerp(19,15,k)); cam.lookAt(0,1,-1);
+    for(var i=0;i<N;i++){
+      var p=cells[i], wave=Math.sin(t*1.4+p.x*.35+p.z*.3)*.5*(1-k*.7);
+      var h=Math.max(.05,lerp(p.h+wave,.8+Math.sin(t+p.x*.2)*.07,k));
+      d.position.set(p.x,0,p.z); d.scale.set(.9,h,.9); d.updateMatrix(); mesh.setMatrixAt(i,d.matrix);
+      col.copy(c1).lerp(c2,k*(.35+.25*Math.sin(p.x*.3+p.z*.2+t*.8))); mesh.setColorAt(i,col);
+    }
+    mesh.instanceMatrix.needsUpdate=true; if(mesh.instanceColor) mesh.instanceColor.needsUpdate=true;
+    var lx=narrow?0:6.8, ly=narrow?6.2:3.8;
+    logo.position.set(lx,ly+Math.sin(t*1.2)*.22+(1-k)*3,narrow?-3:-1);
+    logo.rotation.set(-.15+ps.y*.1,(1-k)*Math.PI*1.4-.45+ps.x*.35+Math.sin(t*.6)*.12,0);
+    r.render(scene,cam);
+  })(performance.now());
+  requestAnimationFrame(function(){wrap.classList.add("on");});
+}
+
+/* ---------- modo stand ---------- */
+var stand=document.getElementById("stand");
+var qrBox=document.getElementById("standQr"), qrUrl=document.getElementById("standUrl"), qrInput=document.getElementById("standQrInput");
+var capEl=document.getElementById("standCap"), clockEl=document.getElementById("standClock");
+var numEl=document.getElementById("standNum"), lblEl=document.getElementById("standLbl");
+var standLogo=null, standRAF=0, idleT=0;
+
+function defaultUrl(){
+  try{ var v=localStorage.getItem("mattera-qr"); if(v) return v; }catch(e){}
+  var q=new URLSearchParams(location.search).get("qr"); if(q) return q;
+  return location.href.split("#")[0].replace(/[?&]stand(=[^&]*)?/,"").replace(/\?$/,"");
+}
+function drawQR(url){
+  qrUrl.textContent=url.replace(/^https?:\/\//,"");
+  if(typeof qrcode!=="function"){ qrBox.innerHTML='<p style="color:#0C211B;font:500 13px var(--sans);padding:12px">No se pudo cargar el generador de QR. Revisa la conexión.</p>'; return; }
+  var qr=qrcode(0,"M"); qr.addData(url); qr.make();
+  var n=qr.getModuleCount(), s='<svg viewBox="0 0 '+n+' '+n+'" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">';
+  for(var y=0;y<n;y++) for(var x=0;x<n;x++) if(qr.isDark(y,x)) s+='<rect x="'+(x+.06)+'" y="'+(y+.06)+'" width=".88" height=".88" rx=".22" fill="#0C211B"/>';
+  qrBox.innerHTML=s+"</svg>";
+}
+var CAPS=[
+  {at:0,   num:"168", lbl:"horas en tu semana",            txt:"Tu semana tiene 168 horas."},
+  {at:.45, num:null,  lbl:"horas en trabajo repetitivo",   txt:"Las claras se repiten todos los días."},
+  {at:1,   num:null,  lbl:"horas que un sistema puede operar", txt:"Un sistema las opera. Tú decides."}
+];
+// guion del ciclo: [p objetivo, segundos de transición, segundos de pausa]
+var SCRIPT=[[0,2.5,4.5],[.45,3,4.5],[1,3,6]];
+function standLoop(now){
+  standRAF=requestAnimationFrame(standLoop);
+  var t=now/1000, total=0; SCRIPT.forEach(function(s){total+=s[1]+s[2];});
+  var tt=t%total, acc=0, prev=SCRIPT[SCRIPT.length-1][0], p=0, idx=0;
+  for(var i=0;i<SCRIPT.length;i++){
+    var s=SCRIPT[i];
+    if(tt<acc+s[1]){ p=lerp(prev,s[0],easeIO((tt-acc)/s[1])); idx=i; break; }
+    acc+=s[1];
+    if(tt<acc+s[2]){ p=s[0]; idx=i; break; }
+    acc+=s[2]; prev=s[0];
+  }
+  window.__standP=p;
+  var cap=CAPS[idx];
+  if(capEl.dataset.i!==String(idx)){
+    capEl.dataset.i=String(idx); capEl.classList.add("out");
+    setTimeout(function(){ capEl.textContent=cap.txt; capEl.classList.remove("out"); },450);
+    numEl.textContent=cap.num || (window.__mx?String(window.__mx.rep()):"");
+    lblEl.textContent=cap.lbl;
+  }
+  var d=new Date(); clockEl.textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+" · Connect Zapopan";
+  if(standLogo){ standLogo.rotation.y=Math.sin(t*.5)*.55; standLogo.rotation.x=Math.sin(t*.37)*.12; standLogo.position.y=3.9+Math.sin(t*1.1)*.3; }
+}
+function shiftView(on){
+  var mx=window.__mx; if(!mx) return;
+  var w=innerWidth,h=innerHeight;
+  if(on && w>h) mx.camera.setViewOffset(w,h,-w*.2,0,w,h); else mx.camera.clearViewOffset();
+  mx.camera.updateProjectionMatrix();
+}
+function enterStand(){
+  document.body.classList.add("standing"); scrollTo(0,0);
+  var url=defaultUrl(); qrInput.value=url; drawQR(url);
+  var mx=window.__mx;
+  if(mx && !standLogo){ standLogo=makeLogo(mx.T,4.6,.6); standLogo.position.set(2.6,3.9,-24); if(!mx.camera.parent) mx.scene.add(mx.camera); mx.camera.add(standLogo); }
+  if(standLogo) standLogo.visible=true;
+  setTimeout(function(){ shiftView(true); if(mx) mx.resize(); shiftView(true); },50);
+  if(!standRAF) standRAF=requestAnimationFrame(standLoop);
+  if(location.hash!=="#stand") history.replaceState(null,"","#stand");
+  poke();
+}
+function exitStand(){
+  document.body.classList.remove("standing","idle");
+  cancelAnimationFrame(standRAF); standRAF=0; window.__standP=null;
+  if(standLogo) standLogo.visible=false;
+  shiftView(false);
+  if(document.fullscreenElement) document.exitFullscreen().catch(function(){});
+  history.replaceState(null,"",location.pathname+location.search);
+  dispatchEvent(new Event("scroll"));
+}
+function poke(){ document.body.classList.remove("idle"); clearTimeout(idleT); idleT=setTimeout(function(){ if(document.body.classList.contains("standing")) document.body.classList.add("idle"); },3000); }
+addEventListener("pointermove",poke,{passive:true});
+addEventListener("resize",function(){ if(document.body.classList.contains("standing")) shiftView(true); });
+document.getElementById("standBtn").addEventListener("click",enterStand);
+document.getElementById("standExit").addEventListener("click",exitStand);
+document.getElementById("standFs").addEventListener("click",function(){
+  var el=document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen().catch(function(){ alert("El navegador no permitió pantalla completa aquí. Usa F11 (Windows) o Ctrl + Cmd + F (Mac)."); });
+});
+qrInput.addEventListener("change",function(){
+  var v=qrInput.value.trim(); if(!v) return;
+  if(!/^https?:\/\//.test(v)) v="https://"+v;
+  try{ localStorage.setItem("mattera-qr",v); }catch(e){}
+  drawQR(v);
+});
+addEventListener("keydown",function(e){
+  if(e.target===qrInput) return;
+  if(e.key==="Escape" && document.body.classList.contains("standing")) exitStand();
+  if((e.key==="s"||e.key==="S") && !document.body.classList.contains("standing")) enterStand();
+});
+
+/* ---------- arranque ---------- */
+function start(){
+  var mx=window.__mx;
+  if(mx){ initClose(mx.T); }
+  if(location.hash==="#stand" || /[?&]stand\b/.test(location.search)) enterStand();
+}
+if(document.readyState==="complete") start(); else addEventListener("load",start);
+})();
+</script>
+
+<script>
+(function(){
+"use strict";
+var WA_NUM="523327874747";
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var $=function(id){return document.getElementById(id);};
+var fmt=function(n){return Math.round(n).toLocaleString("es-MX");};
+var money=function(n){return "$"+fmt(n);};
+var now=function(){var d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");};
+var wait=function(ms){return new Promise(function(r){setTimeout(r,reduce?Math.min(ms,80):ms);});};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+
+/* ================= PESTAÑAS ================= */
+var tabs=[].slice.call(document.querySelectorAll('.tabs [role="tab"]'));
+function selectTab(t,focus){
+  tabs.forEach(function(x){
+    var on=x===t; x.setAttribute("aria-selected",on?"true":"false"); x.tabIndex=on?0:-1;
+    $(x.getAttribute("aria-controls")).hidden=!on;
+  });
+  if(focus) t.focus();
+  t.scrollIntoView({block:"nearest",inline:"center",behavior:reduce?"auto":"smooth"});
+  var id=t.id;
+  if(id==="t-rep") drawReport(curPer);
+  if(id==="t-agent" && !ranOnce){ ranOnce=true; runTask(); }
+}
+tabs.forEach(function(t,i){
+  t.addEventListener("click",function(){selectTab(t);});
+  t.addEventListener("keydown",function(e){
+    var k=e.key, j=i;
+    if(k==="ArrowRight") j=(i+1)%tabs.length; else if(k==="ArrowLeft") j=(i-1+tabs.length)%tabs.length;
+    else if(k==="Home") j=0; else if(k==="End") j=tabs.length-1; else return;
+    e.preventDefault(); selectTab(tabs[j],true);
+  });
+});
+function pills(group,cb){
+  [].slice.call(group.querySelectorAll(".opt-pill")).forEach(function(b){
+    b.addEventListener("click",function(){
+      group.querySelectorAll(".opt-pill").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false");});
+      cb(b);
+    });
+  });
+}
+
+/* ================= 1. CHATBOT ================= */
+var waBody=$("waBody"), waChips=$("waChips"), waStatus=$("waStatus");
+function waAdd(text,who,tag){
+  var b=document.createElement("div"); b.className="bub "+who;
+  b.innerHTML=esc(text)+(tag?'<br><span class="tag">'+esc(tag)+'</span>':"")+"<time>"+now()+"</time>";
+  waBody.appendChild(b); waBody.scrollTop=waBody.scrollHeight; return b;
+}
+async function waBot(text,tag,chips){
+  waStatus.textContent="escribiendo…";
+  var ty=document.createElement("div"); ty.className="typing"; ty.innerHTML="<i></i><i></i><i></i>";
+  waBody.appendChild(ty); waBody.scrollTop=waBody.scrollHeight;
+  await wait(650+Math.min(900,text.length*8));
+  ty.remove(); waStatus.textContent="en línea";
+  waAdd(text,"bot",tag); setChips(waChips,chips||WA_DEFAULT,waSend);
+}
+var WA_DEFAULT=["¿Tienen disponibilidad mañana?","¿Cuánto cuesta?","¿Cuál es su horario?","Quiero hablar con una persona"];
+var waState=null;
+function setChips(box,list,fn){
+  box.innerHTML="";
+  list.forEach(function(c){var b=document.createElement("button");b.type="button";b.textContent=c;b.addEventListener("click",function(){fn(c);});box.appendChild(b);});
+}
+function waSend(text){
+  text=text.trim(); if(!text) return;
+  waAdd(text,"me"); setChips(waChips,[],waSend);
+  var t=norm(text);
+  if(waState==="hora"){
+    var m=t.match(/(\d{1,2})(?::(\d{2}))?/);
+    var h=m?m[0]:"16:00"; if(h.indexOf(":")<0) h=h+":00";
+    waState=null;
+    return waBot("Listo. Te agendé mañana a las "+h+". Te mando un recordatorio una hora antes. ¿Me compartes tu nombre para la cita?","Cita registrada en el CRM · recordatorio programado",["Soy Laura","Gracias"]);
+  }
+  if(/(soy|me llamo|mi nombre)/.test(t)){
+    var n=text.replace(/^(soy|me llamo|mi nombre es)\s*/i,"").split(" ")[0];
+    return waBot("Gracias, "+n+". Tu cita quedó confirmada. Si necesitas cambiarla, escríbeme aquí.","Contacto actualizado en el CRM");
+  }
+  if(/(dispon|cita|agendar|agenda|manana|reserv|lugar|turno)/.test(t)){
+    waState="hora";
+    return waBot("Claro. Mañana tenemos 10:00, 16:00 y 17:30. ¿Cuál te acomoda?",null,["10:00","16:00","17:30"]);
+  }
+  if(/(cuesta|precio|costo|cuanto|cobran|tarifa)/.test(t)){
+    return waBot("Estos son nuestros precios:\n· Servicio estándar: $450\n· Servicio completo: $850\n¿Quieres que te aparte un lugar?","Precios de ejemplo · el bot usa los de tu negocio",["Sí, apártame uno","¿Cuál es su horario?"]);
+  }
+  if(/(horario|abren|cierran|hora|donde|ubica|direccion)/.test(t)){
+    return waBot("Abrimos de lunes a sábado, de 9:00 a 19:00. Te comparto la ubicación en un momento. ¿Quieres agendar?",null,["Sí, quiero agendar","¿Cuánto cuesta?"]);
+  }
+  if(/(persona|humano|asesor|alguien|hablar|llamar)/.test(t)){
+    return waBot("Te comunico con alguien del equipo. Ya le pasé el resumen de tu conversación para que no tengas que repetir nada.","Escalado a una persona con contexto");
+  }
+  if(/(si|apart|quiero)/.test(t)){
+    waState="hora";
+    return waBot("Perfecto. Mañana tenemos 10:00, 16:00 y 17:30. ¿Cuál prefieres?",null,["10:00","16:00","17:30"]);
+  }
+  if(/(gracias|ok|listo|perfecto)/.test(t)) return waBot("Con gusto. Aquí estoy a cualquier hora.");
+  waBot("Te puedo ayudar con citas, precios u horarios. Si prefieres, te paso con una persona del equipo.");
+}
+$("waForm").addEventListener("submit",function(e){e.preventDefault();var v=$("waIn").value;$("waIn").value="";waSend(v);});
+waAdd("Hola, soy el asistente de Tu negocio. ¿En qué te ayudo?","bot");
+setChips(waChips,WA_DEFAULT,waSend);
+
+/* ================= 2. AGENTE: TAREAS ================= */
+var TASKS={
+  cotizar:{t:"Tarea: cotizar a un cliente",steps:[
+    ["Lee la solicitud","«Necesito 3 servicios completos para el viernes»","WhatsApp"],
+    ["Consulta la lista de precios","Servicio completo: $850 por unidad","Hoja de precios"],
+    ["Revisa disponibilidad","Viernes 10:00 libre","Calendario"],
+    ["Arma la cotización","Folio, conceptos, total y vigencia","Plantilla"],
+    ["Envía la cotización al cliente","PDF por el mismo chat","WhatsApp"],
+    ["Registra y programa seguimiento","Recordatorio en 48 h si no responde","CRM"]],
+    out:{h:"Cotización enviada · datos de ejemplo",rows:[["Folio","COT-1042"],["3 × Servicio completo","$2,550"],["Fecha propuesta","Viernes 10:00"],["Seguimiento","Automático en 48 h"]]}},
+  seguimiento:{t:"Tarea: dar seguimiento a pendientes",steps:[
+    ["Busca propuestas sin respuesta","7 con más de 3 días","CRM"],
+    ["Prioriza","Por monto y antigüedad","IA"],
+    ["Redacta un mensaje para cada cliente","Con su nombre y su propuesta","IA"],
+    ["Envía en horario hábil","Sin mensajes masivos","WhatsApp · Correo"],
+    ["Actualiza estado y siguiente acción","Nada queda sin dueño","CRM"]],
+    out:{h:"Resultado · datos de ejemplo",rows:[["Seguimientos enviados","7"],["Pendientes olvidados","0"],["Próxima revisión","Mañana 9:00"]]}},
+  validar:{t:"Tarea: validar y registrar un pedido",steps:[
+    ["Recibe el pedido","Correo con 4 productos","Correo"],
+    ["Extrae productos y cantidades","Sin captura manual","IA"],
+    ["Valida existencias","3 disponibles, 1 agotado","Inventario"],
+    ["Propone un sustituto al cliente","Mismo precio, entrega igual","WhatsApp"],
+    ["Registra el pedido y avisa a almacén","Con fecha de entrega","CRM · Chat interno"]],
+    out:{h:"Pedido registrado · datos de ejemplo",rows:[["Pedido","#318"],["Productos","4 (1 sustituido)"],["Estado","Listo para surtir"]]}}
+};
+var curTask="cotizar", running=false, ranOnce=false;
+pills(document.querySelector('#p-agent .task-pick'),function(b){curTask=b.dataset.task;$("runTitle").textContent=TASKS[curTask].t;prepTask();});
+function prepTask(){
+  var T=TASKS[curTask], ol=$("runSteps"); ol.innerHTML="";
+  T.steps.forEach(function(s,i){
+    var li=document.createElement("li");
+    li.innerHTML='<span class="ic">'+(i+1)+'</span><div><b>'+esc(s[0])+'</b><small>'+esc(s[1])+'</small></div><span class="tool">'+esc(s[2])+'</span>';
+    ol.appendChild(li);
+  });
+  $("runOut").hidden=true; $("runTime").textContent="0.0 s";
+}
+async function runTask(){
+  if(running) return; running=true; prepTask();
+  var lis=[].slice.call($("runSteps").children), t0=performance.now(), tick=setInterval(function(){$("runTime").textContent=((performance.now()-t0)/1000).toFixed(1)+" s";},100);
+  for(var i=0;i<lis.length;i++){
+    lis[i].classList.add("on"); await wait(700+Math.random()*500);
+    lis[i].classList.remove("on"); lis[i].classList.add("done"); lis[i].querySelector(".ic").textContent="✓";
+  }
+  clearInterval(tick); $("runTime").textContent=((performance.now()-t0)/1000).toFixed(1)+" s";
+  var o=TASKS[curTask].out, box=$("runOut");
+  box.innerHTML="<h5>"+esc(o.h)+"</h5>"+o.rows.map(function(r){return '<div class="row"><span>'+esc(r[0])+'</span><span class="mono">'+esc(r[1])+"</span></div>";}).join("");
+  box.hidden=false; running=false;
+}
+$("runTask").addEventListener("click",runTask);
+prepTask();
+
+/* ================= 3. CRM ================= */
+var COLS={nuevo:"Nuevo",contactado:"Contactado",propuesta:"Propuesta",ganado:"Ganado"};
+var leads=[
+  {id:1,n:"Laura P.",v:4500,src:"WhatsApp",col:"nuevo",h:[["Lun 09:12","Llegó por WhatsApp; el chatbot la calificó"]]},
+  {id:2,n:"Grupo Vega",v:9800,src:"Sitio web",col:"nuevo",h:[["Lun 11:40","Formulario del sitio"]]},
+  {id:3,n:"Taller Ruiz",v:12000,src:"Formulario",col:"contactado",h:[["Vie 16:05","Formulario del sitio"],["Lun 10:00","Llamada de descubrimiento"]]},
+  {id:4,n:"Clínica Norte",v:28000,src:"Correo",col:"propuesta",h:[["Mié 13:20","Correo de solicitud"],["Jue 12:00","Diagnóstico"],["Vie 18:30","Propuesta enviada; seguimiento en 48 h"]]},
+  {id:5,n:"Andrea M.",v:3200,src:"WhatsApp",col:"ganado",h:[["Mar 23:14","Cita agendada por el chatbot"],["Mié 17:30","Cliente atendido"]]}
+];
+var nextId=6, NEWS=[["Mariana T.",6200],["Despacho Ortiz",15400],["Rocío L.",2800],["Constructora Alba",31000]];
+function renderCRM(){
+  Object.keys(COLS).forEach(function(c){
+    var col=document.querySelector('.col[data-col="'+c+'"]'), drop=col.querySelector(".drop"), list=leads.filter(function(l){return l.col===c;});
+    drop.innerHTML="";
+    list.forEach(function(l){drop.appendChild(cardEl(l));});
+    col.querySelector("h4 span").textContent=list.length+" · "+money(list.reduce(function(a,l){return a+l.v;},0));
+  });
+}
+function cardEl(l){
+  var d=document.createElement("div"); d.className="card"+(l.fresh?" new":""); d.dataset.id=l.id; d.tabIndex=0;
+  d.setAttribute("aria-label",l.n+", "+COLS[l.col]+", "+money(l.v)+". Enter para ver historial; flechas para mover.");
+  d.innerHTML="<b>"+esc(l.n)+'</b><small><span>'+money(l.v)+'</span><span>'+esc(l.h[l.h.length-1][0])+'</span></small><span class="src">'+esc(l.src)+"</span>";
+  l.fresh=false; return d;
+}
+function showDetail(l){
+  var box=$("crmDetail");
+  box.innerHTML="<h5>"+esc(l.n)+'</h5><span class="mono" style="font-size:12px;color:var(--tinta-sec)">'+COLS[l.col]+" · "+money(l.v)+" · "+esc(l.src)+"</span><ol>"+l.h.map(function(x){return "<li><span>"+esc(x[0])+"</span>"+esc(x[1])+"</li>";}).join("")+"</ol>";
+  box.hidden=false;
+}
+function moveLead(l,c){
+  if(l.col===c) return; l.col=c;
+  var d=new Date(), dias=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+  l.h.push([dias[d.getDay()]+" "+now(),"Movido a "+COLS[c]+(c==="ganado"?"; se programó la bienvenida":"")]);
+  renderCRM(); showDetail(l);
+}
+var kb=$("kanban"), drag=null;
+kb.addEventListener("pointerdown",function(e){
+  var c=e.target.closest(".card"); if(!c) return;
+  var r=c.getBoundingClientRect();
+  drag={el:c,id:+c.dataset.id,x0:e.clientX,y0:e.clientY,dx:e.clientX-r.left,dy:e.clientY-r.top,w:r.width,moved:false,pid:e.pointerId};
+  c.setPointerCapture(e.pointerId);
+});
+kb.addEventListener("pointermove",function(e){
+  if(!drag) return;
+  if(!drag.moved && Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<6) return;
+  if(!drag.moved){
+    drag.moved=true;
+    drag.ph=drag.el.cloneNode(true); drag.ph.classList.add("ph"); drag.el.parentNode.insertBefore(drag.ph,drag.el);
+    drag.el.classList.add("drag"); drag.el.style.width=drag.w+"px";
+  }
+  drag.el.style.left=(e.clientX-drag.dx)+"px"; drag.el.style.top=(e.clientY-drag.dy)+"px";
+  var under=document.elementFromPoint(e.clientX,e.clientY), col=under&&under.closest(".col");
+  kb.querySelectorAll(".col").forEach(function(x){x.classList.toggle("over",x===col);});
+});
+function endDrag(e){
+  if(!drag) return;
+  var l=leads.filter(function(x){return x.id===drag.id;})[0];
+  if(drag.moved){
+    var under=document.elementFromPoint(e.clientX,e.clientY), col=under&&under.closest(".col");
+    kb.querySelectorAll(".col").forEach(function(x){x.classList.remove("over");});
+    if(col) moveLead(l,col.dataset.col); else renderCRM();
+  } else showDetail(l);
+  drag=null;
+}
+kb.addEventListener("pointerup",endDrag);
+kb.addEventListener("pointercancel",function(){drag=null;renderCRM();});
+kb.addEventListener("keydown",function(e){
+  var c=e.target.closest(".card"); if(!c) return;
+  var l=leads.filter(function(x){return x.id===+c.dataset.id;})[0], keys=Object.keys(COLS), i=keys.indexOf(l.col);
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();showDetail(l);}
+  if(e.key==="ArrowRight"&&i<keys.length-1){moveLead(l,keys[i+1]);focusCard(l.id);}
+  if(e.key==="ArrowLeft"&&i>0){moveLead(l,keys[i-1]);focusCard(l.id);}
+});
+function focusCard(id){var c=kb.querySelector('.card[data-id="'+id+'"]');if(c)c.focus();}
+$("crmNew").addEventListener("click",function(){
+  var n=NEWS[(nextId-6)%NEWS.length], l={id:nextId++,n:n[0],v:n[1],src:"WhatsApp",col:"nuevo",fresh:true,h:[["Ahora","Llegó por WhatsApp; el chatbot lo calificó y lo registró"]]};
+  leads.unshift(l); renderCRM(); showDetail(l);
+});
+renderCRM();
+
+/* ================= 4. INTEGRACIONES ================= */
+var SRC={
+  wa:{log:"Mensaje de Laura: «Quiero agendar el jueves»",dest:[["crm","CRM","contacto actualizado y conversación guardada"],["sheet","Hoja","fila nueva en Solicitudes"],["cal","Calendario","jueves 11:00 apartado"]]},
+  form:{log:"Formulario: cotización de 20 piezas",dest:[["crm","CRM","lead nuevo con origen Sitio web"],["sheet","Hoja","solicitud registrada con folio"],["cal","Calendario","llamada mañana 10:00"]]},
+  mail:{log:"Correo: pedido #318 de Taller Ruiz",dest:[["crm","CRM","pedido asociado al cliente"],["sheet","Hoja","inventario actualizado"],["cal","Calendario","entrega el viernes"]]}
+};
+var curSrc="wa", intBusy=false, svg=$("intSvg"), pk=$("packets"), log=$("intLog");
+pills(document.querySelector('#p-int .task-pick'),function(b){curSrc=b.dataset.src;});
+function lit(n,on){var g=svg.querySelector('[data-n="'+n+'"]');if(g)g.classList.toggle("lit",on);}
+function travel(pathId,ms){
+  return new Promise(function(res){
+    var p=$(pathId), L=p.getTotalLength(), c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("r","7"); pk.appendChild(c); p.classList.add("hot");
+    var t0=performance.now();
+    (function f(t){var k=Math.min(1,(t-t0)/(reduce?1:ms)), pt=p.getPointAtLength(L*k);
+      c.setAttribute("cx",pt.x); c.setAttribute("cy",pt.y);
+      if(k<1) requestAnimationFrame(f); else { c.remove(); p.classList.remove("hot"); res(); }})(t0);
+  });
+}
+function logLine(html){var li=document.createElement("li");li.innerHTML=html;log.insertBefore(li,log.firstChild);while(log.children.length>5)log.removeChild(log.lastChild);}
+$("runInt").addEventListener("click",async function(){
+  if(intBusy) return; intBusy=true;
+  var s=SRC[curSrc]; lit(curSrc,true); logLine("<b>"+now()+"</b> · entra: "+esc(s.log));
+  await travel("l-"+curSrc,800); lit(curSrc,false);
+  var hub=svg.querySelector(".hub"); hub.classList.remove("spin"); void hub.getBBox(); hub.classList.add("spin");
+  await Promise.all(s.dest.map(function(d,i){return wait(i*120).then(function(){return travel("l-"+d[0],900);}).then(function(){lit(d[0],true);logLine("<b>"+esc(d[1])+"</b> · "+esc(d[2]));});}));
+  await wait(900); s.dest.forEach(function(d){lit(d[0],false);}); intBusy=false;
+});
+
+/* ================= 5. REPORTES ================= */
+var REP={
+  semana:{x:["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],v:[42,51,47,63,71,38,22],citas:58,resp:6},
+  mes:{x:["Sem 1","Sem 2","Sem 3","Sem 4"],v:[286,312,334,351],citas:247,resp:7},
+  trimestre:{x:["Jul","Ago","Sep"],v:[1120,1268,1355],citas:1012,resp:7}
+};
+var curPer="semana";
+pills(document.querySelector('#p-rep .task-pick'),function(b){curPer=b.dataset.per;drawReport(curPer);});
+function countTo(el,to,suf){
+  var t0=performance.now(), from=parseFloat(el.dataset.v||"0");
+  el.dataset.v=to;
+  (function f(t){var k=reduce?1:Math.min(1,(t-t0)/700), e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e)+(suf||"");if(k<1)requestAnimationFrame(f);})(t0);
+}
+function drawReport(per){
+  var d=REP[per], total=d.v.reduce(function(a,b){return a+b;},0), max=Math.max.apply(null,d.v);
+  countTo($("k1"),total); countTo($("k2"),d.citas); countTo($("k3"),d.resp," s"); countTo($("k4"),total*3/60," h");
+  var ch=$("repChart"), W=600, H=220, n=d.v.length, gw=W/n, bw=Math.min(64,gw*.56);
+  if(ch.children.length!==n){ ch.innerHTML=""; for(var i=0;i<n;i++){var r=document.createElementNS("http://www.w3.org/2000/svg","rect");r.setAttribute("rx","6");r.setAttribute("y",H);r.setAttribute("height",0);ch.appendChild(r);} }
+  [].slice.call(ch.children).forEach(function(r,i){
+    var h=(d.v[i]/max)*(H-16);
+    r.setAttribute("x",(i*gw+(gw-bw)/2).toFixed(1)); r.setAttribute("width",bw.toFixed(1));
+    r.classList.toggle("peak",d.v[i]===max);
+    requestAnimationFrame(function(){r.setAttribute("y",(H-h).toFixed(1));r.setAttribute("height",h.toFixed(1));});
+  });
+  $("repX").innerHTML=d.x.map(function(x){return "<span>"+x+"</span>";}).join("");
+}
+
+/* ================= 6. SITIO WEB ================= */
+pills(document.querySelector('#p-web .task-pick'),function(b){$("browser").dataset.view=b.dataset.view;});
+$("bBubble").addEventListener("click",function(){var c=$("bChat");c.hidden=!c.hidden;});
+
+/* ================= AGENTE DE MATTERA ================= */
+var fab=$("agFab"), panel=$("agPanel"), body=$("agBody"), chips=$("agChips");
+var REMOTE=/(^|\.)matterasystems\.com$|samuelalexsanche\.github\.io$/.test(location.hostname);
+var ENDPOINT="https://mattera-chat.mattera.workers.dev";
+var hist=[], calc=null, greeted=false;
+$("agMode").textContent=REMOTE?"IA en línea · resuelve dudas y calcula tu ahorro":"resuelve dudas y calcula tu ahorro";
+
+function agAdd(html,who){var b=document.createElement("div");b.className="bub "+who;b.innerHTML=html;body.appendChild(b);body.scrollTop=body.scrollHeight;return b;}
+function agCard(html){var b=document.createElement("div");b.className="calc-card";b.innerHTML=html;body.appendChild(b);body.scrollTop=body.scrollHeight;}
+async function agSay(text,chipList){
+  var ty=document.createElement("div"); ty.className="typing"; ty.innerHTML="<i></i><i></i><i></i>"; body.appendChild(ty); body.scrollTop=body.scrollHeight;
+  await wait(500+Math.min(900,text.length*6)); ty.remove();
+  agAdd(esc(text),"bot"); hist.push({role:"assistant",content:text});
+  setChips(chips,chipList||MAIN_CHIPS,agSend);
+}
+var MAIN_CHIPS=["Calcular mi ahorro","¿Cuánto cuesta?","¿Cuánto tardan?","¿Qué hacen exactamente?","¿Hay contrato?"];
+function openAgent(mode,prefill){
+  panel.hidden=false; fab.hidden=true; fab.setAttribute("aria-expanded","true");
+  if(!greeted){ greeted=true; agSay("Hola. Soy el agente de Mattera. Puedo calcular cuánto tiempo y dinero le ahorraría un sistema a tu negocio, o resolver tus dudas sobre servicios, precios y tiempos."); }
+  if(mode==="calc") setTimeout(function(){startCalc(prefill);},greeted?50:1300);
+  setTimeout(function(){$("agIn").focus({preventScroll:true});},350);
+}
+function closeAgent(){panel.hidden=true;fab.hidden=false;fab.setAttribute("aria-expanded","false");fab.focus();}
+fab.addEventListener("click",function(){openAgent();});
+$("agClose").addEventListener("click",closeAgent);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!panel.hidden)closeAgent();});
+document.querySelectorAll("[data-open-agent]").forEach(function(b){b.addEventListener("click",function(){openAgent(b.dataset.openAgent);});});
+$("agForm").addEventListener("submit",function(e){e.preventDefault();var v=$("agIn").value;$("agIn").value="";agSend(v);});
+
+/* ----- cálculo de ahorro ----- */
+// Supuestos explícitos: 4.33 semanas por mes, 192 horas laborales al mes (48 h × 4),
+// un sistema absorbe 60% del trabajo repetitivo. Inversión: misma fórmula que la calculadora de matterasystems.com.
+function startCalc(pre){
+  calc={step:"personas",p:null,h:null,s:null};
+  if(pre){ if(pre.p) calc.p=pre.p; if(pre.h) calc.h=pre.h; }
+  nextCalc();
+}
+function nextCalc(){
+  if(!calc.p){ calc.step="personas"; return agSay("Vamos a calcularlo. ¿Cuántas personas de tu equipo dedican tiempo a contestar mensajes, capturar datos o dar seguimiento?",["Solo yo","2","3 a 5","6 a 10","Más de 10"]); }
+  if(!calc.h){ calc.step="horas"; return agSay("¿Cuántas horas a la semana dedica cada una a ese trabajo repetitivo, aproximadamente?",["5 h","10 h","20 h","30 h"]); }
+  if(!calc.s){ calc.step="sueldo"; return agSay("Último dato: ¿cuál es el sueldo mensual promedio de esas personas? Si no lo sabes, uso la referencia del salario mínimo.",["$10,000 (referencia)","$15,000","$20,000","$30,000"]); }
+  showCalc();
+}
+function num(t){var m=t.replace(/,/g,"").match(/\d+(\.\d+)?/);return m?parseFloat(m[0]):null;}
+function calcInput(text){
+  var t=norm(text), n=num(t);
+  if(calc.step==="personas"){
+    if(/solo yo|yo solo|una persona|^1$/.test(t)) n=1; else if(/3 a 5/.test(t)) n=4; else if(/6 a 10/.test(t)) n=8; else if(/mas de 10/.test(t)) n=12;
+    if(!n||n<1) return agSay("¿Me das un número aproximado de personas?",["Solo yo","2","3 a 5","6 a 10"]);
+    calc.p=Math.min(500,Math.round(n));
+  } else if(calc.step==="horas"){
+    if(/dia|diari/.test(t)&&n) n=n*5;
+    if(!n||n<=0) return agSay("¿Cuántas horas a la semana por persona? Un número aproximado basta.",["5 h","10 h","20 h"]);
+    calc.h=Math.min(60,n);
+  } else if(calc.step==="sueldo"){
+    if(/referencia|no se|minimo/.test(t)) n=10000;
+    if(!n) return agSay("¿Cuánto gana al mes cada persona, aproximadamente? Por ejemplo, 12000.",["$10,000 (referencia)","$15,000"]);
+    if(n<1000) n=n*1000;
+    calc.s=n;
+  }
+  nextCalc();
+}
+async function showCalc(){
+  var p=calc.p,h=calc.h,s=calc.s;
+  var horasMes=p*h*4.33, recMes=horasMes*.6, recAnio=recMes*12;
+  var valorHora=s/192, dineroMes=recMes*valorHora, dineroAnio=dineroMes*12;
+  var desarrollo=Math.max(10000,Math.round((p*1800+8000)/1000)*1000);
+  var operativo=Math.max(2500,Math.round(desarrollo*.2/500)*500);
+  var neto=dineroMes-operativo, meses=neto>0?desarrollo/neto:null;
+  var ty=document.createElement("div"); ty.className="typing"; ty.innerHTML="<i></i><i></i><i></i>"; body.appendChild(ty); body.scrollTop=body.scrollHeight;
+  await wait(900); ty.remove();
+  var wa="Hola, Mattera. Calculé mi ahorro con su agente: "+p+" persona(s), "+h+" h/semana cada una. Un sistema podría devolver unas "+fmt(recMes)+" h al mes, con un valor de "+money(dineroMes)+" MXN al mes. Quiero agendar mi diagnóstico de 30 minutos.";
+  agCard('<h5>Tu estimación</h5>'+
+    '<p class="big">'+fmt(recMes)+'<small>h al mes</small></p>'+
+    '<p class="big" style="font-size:26px">'+money(dineroMes)+'<small>MXN al mes</small></p>'+
+    '<div class="row"><span>Horas en trabajo repetitivo</span><span>'+fmt(horasMes)+' h/mes</span></div>'+
+    '<div class="row"><span>Horas que un sistema absorbe</span><span>'+fmt(recAnio)+' h/año</span></div>'+
+    '<div class="row"><span>Valor de esas horas</span><span>'+money(dineroAnio)+'/año</span></div>'+
+    '<div class="row"><span>Inversión estimada</span><span>'+money(desarrollo)+' + '+money(operativo)+'/mes</span></div>'+
+    '<div class="row"><span>Recuperación estimada</span><span>'+(meses?(meses<1?"menos de 1 mes":(meses<10?meses.toFixed(1):fmt(meses))+" meses"):"revisar en diagnóstico")+'</span></div>'+
+    '<p class="note">Estimación con supuestos: 4.33 semanas por mes, 192 horas laborales al mes y un sistema que absorbe 60% del trabajo repetitivo. El alcance y el precio exactos salen del diagnóstico, que no tiene costo.</p>'+
+    '<a href="https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(wa)+'" target="_blank" rel="noopener">Agendar mi diagnóstico</a>');
+  hist.push({role:"assistant",content:"Estimación: "+fmt(recMes)+" h/mes recuperables, "+money(dineroMes)+" MXN/mes."});
+  calc=null;
+  setChips(chips,["Recalcular","¿Qué incluye la operación mensual?","¿Cuánto tardan?","¿Hay contrato?"],agSend);
+}
+
+/* ----- base de conocimiento (misma información que el asistente del sitio) ----- */
+var KB=[
+  {k:["calcul","ahorr","cuanto me ahorr","cuanto tiempo","dinero","recalcular"],calc:true},
+  {k:["operacion mensual","mensualidad","mantenimiento","incluye la operacion"],a:"La operación mensual va desde $1,500 MXN y cubre servidores, APIs, monitoreo y ajustes del sistema. En los sitios web, el mantenimiento es de $199, $299 o $799 al mes según el plan."},
+  {k:["cuesta","precio","costo","cobran","cuanto sale","tarifa","inversion"],a:"Los sistemas a medida van desde $10,000 MXN de pago único de desarrollo, más una operación mensual desde $1,500 MXN. El alcance y el precio exactos salen del diagnóstico de 30 minutos, que no tiene costo. Los sitios web tienen precio público: T1 $5,900, T2 $9,900 y T3 $19,900 MXN."},
+  {k:["plan","t1","t2","t3","pagina web","sitio web","sitio"],a:"Hay tres planes de sitio web con precio público. T1 Presencia, $5,900: una página, en línea en 5 días. T2 Sistema, $9,900: hasta 5 secciones con asistente de IA, en 7 días. T3 Operación, $19,900: secciones ilimitadas, panel de contactos y agenda conectada, en 14 días. Los tres incluyen SEO y GEO."},
+  {k:["tarda","tiempo de implement","plazo","cuantos dias","cuando estaria","rapido","entrega"],a:"La implementación promedio es de 11 días hábiles. Los sitios web quedan en línea en 5, 7 o 14 días según el plan. Si no cumplimos la fecha comprometida, el primer año de mantenimiento corre por cuenta de Mattera."},
+  {k:["contrato","permanencia","cancelar","plazo forzoso","amarr"],a:"No hay contrato de permanencia mínima. El sistema, los datos y el dominio son tuyos: si dejas de trabajar con Mattera, te los llevas."},
+  {k:["garantia","si no funciona","incumpl"],a:"Si no cumplimos la fecha de entrega comprometida, el primer año de mantenimiento corre por cuenta de Mattera. Además no hay permanencia mínima y el sistema y los datos son tuyos."},
+  {k:["pago","meses sin intereses","msi","tarjeta","transferencia","spei","forma de pago"],a:"Los planes de sitio web se pagan de contado o a 6 meses sin intereses con tarjeta de crédito mexicana, al mismo precio. También por transferencia SPEI. Los meses sin intereses los otorga tu banco."},
+  {k:["seo","geo","google","chatgpt","aparecer","buscador"],a:"SEO es que tu negocio aparezca cuando alguien busca en Google lo que vendes. GEO es que ChatGPT y otras IA te mencionen por nombre cuando les preguntan quién ofrece tu servicio en tu ciudad. Los sitios incluyen ambos."},
+  {k:["masivo","spam","difusion","mensajes a todos"],a:"No enviamos mensajes masivos no solicitados por WhatsApp. Los sistemas responden y dan seguimiento a personas que ya están en conversación con tu negocio."},
+  {k:["reemplaz","sustitu","despedir","vendedor","equipo de ventas"],a:"No sustituimos a tu equipo. El sistema filtra, prepara y da seguimiento; cerrar la venta sigue siendo humano. La idea es que tu gente deje el trabajo repetitivo y haga el que sí necesita a una persona."},
+  {k:["agente","chatbot","diferencia"],a:"Un chatbot conversa: atiende, califica y agenda. Un agente de IA ejecuta tareas completas, como cotizar, dar seguimiento o validar pedidos, usando las herramientas de tu negocio. En la pestaña Agente de IA de esta página puedes ver uno trabajando."},
+  {k:["crm","licencia"],a:"Hacemos CRM a medida, diseñado para cómo trabaja tu empresa y sin licencia por usuario. Puedes probar la versión demo en la pestaña CRM a medida."},
+  {k:["que hacen","servicios","a que se dedican","que ofrecen","exactamente"],a:"Construimos y operamos sistemas con IA: chatbots de WhatsApp, agentes que ejecutan tareas, automatización de procesos, CRM a medida, integraciones entre tus herramientas y sitios web con SEO y GEO. Todos tienen su demo en esta página."},
+  {k:["donde","ubica","oficina","guadalajara","remoto","ciudad"],a:"Mattera está en Guadalajara, Jalisco, y atiende a todo México de forma remota. No hay oficina de atención al público; el diagnóstico presencial se agenda."},
+  {k:["portafolio","clientes","ejemplo","trabajos","casos"],a:"Puedes visitar sitios que ya están publicados: caabsasteel.mx, birrieriacocula.com, luxuryandblush.com y bisel3d.com. En sistemas, hay un asistente para una inmobiliaria en Guadalajara que agenda y da seguimiento."},
+  {k:["resultado","aumenta","ventas","porcentaje","roi","garantizan"],a:"No publicamos cifras de resultados de clientes. Lo que sí podemos hacer es estimar las horas que un sistema le devolvería a tu equipo; si quieres, lo calculamos aquí mismo."},
+  {k:["datos","privacidad","seguridad","informacion"],a:"El sistema, los datos y el dominio son tuyos. Si dejas de trabajar con Mattera, te los llevas."},
+  {k:["diagnostico","agendar","contacto","whatsapp","hablar","llamar","humano","persona"],a:"El siguiente paso es el diagnóstico de 30 minutos, sin costo. Escríbenos por WhatsApp al +52 33 2787 4747 y lo agendamos."},
+  {k:["hola","buenas","que tal"],a:"Hola. ¿Quieres que calculemos cuánto te ahorraría un sistema, o tienes alguna duda sobre servicios, precios o tiempos?"},
+  {k:["gracias"],a:"Con gusto. Si quieres avanzar, el diagnóstico de 30 minutos no tiene costo."}
+];
+function localAnswer(t){
+  var best=null,score=0;
+  KB.forEach(function(it){var s=0;it.k.forEach(function(k){if(t.indexOf(k)>=0)s+=k.length;});if(s>score){score=s;best=it;}});
+  return best;
+}
+async function remoteAnswer(){
+  var ty=document.createElement("div"); ty.className="typing"; ty.innerHTML="<i></i><i></i><i></i>"; body.appendChild(ty); body.scrollTop=body.scrollHeight;
+  var res=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:hist.slice(-10)})});
+  if(!res.ok||!res.body) throw new Error("http "+res.status);
+  var reader=res.body.getReader(), dec=new TextDecoder(), buf="", acc="", bub=null;
+  while(true){
+    var r=await reader.read(); if(r.done) break;
+    buf+=dec.decode(r.value,{stream:true}); var lines=buf.split("\n"); buf=lines.pop();
+    lines.forEach(function(line){
+      line=line.trim(); if(line.indexOf("data:")!==0) return; var d=line.slice(5).trim(); if(d==="[DONE]") return;
+      try{var j=JSON.parse(d), piece=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;
+        if(piece){acc+=piece; if(!bub){ty.remove();bub=agAdd("","bot");} bub.textContent=acc; body.scrollTop=body.scrollHeight;}}catch(e){}
+    });
+  }
+  if(!bub){ ty.remove(); throw new Error("vacío"); }
+  hist.push({role:"assistant",content:acc});
+  setChips(chips,MAIN_CHIPS,agSend);
+}
+async function agSend(text){
+  text=(text||"").trim(); if(!text) return;
+  agAdd(esc(text),"me"); hist.push({role:"user",content:text}); setChips(chips,[],agSend);
+  if(calc){
+    var tc=norm(text), looksAnswer=/\d/.test(tc)||/(solo yo|yo solo|una persona|referencia|no se|minimo|mas de)/.test(tc);
+    if(!looksAnswer){
+      if(/(cancel|salir|despues|luego)/.test(tc)){ calc=null; return agSay("Listo, lo dejamos para después. Cuando quieras, escribe «calcular mi ahorro».");}
+      var hq=localAnswer(tc);
+      if(hq&&!hq.calc){ await agSay(hq.a,[]); return nextCalc(); }
+    }
+    return calcInput(text);
+  }
+  var t=norm(text), hit=localAnswer(t);
+  if(hit&&hit.calc) return startCalc(prefillFromMedicion());
+  if(REMOTE){ try{ return await remoteAnswer(); }catch(e){} }
+  if(hit) return agSay(hit.a);
+  agSay("No tengo ese dato aquí. Para eso, lo mejor es escribirnos por WhatsApp al +52 33 2787 4747 y te respondemos directamente. Si quieres, mientras tanto calculamos tu ahorro.");
+}
+
+/* ----- conexión con la medición de horas de la página ----- */
+function prefillFromMedicion(){
+  var res=$("result"); if(!res||!res.classList.contains("on")) return null;
+  var perfil=document.querySelector('[data-perfil][aria-pressed="true"]'), team=document.querySelector('[data-team][aria-pressed="true"]');
+  var h=+($("hrs")||{}).value||null, p=perfil&&perfil.dataset.perfil==="negocio"&&team?+team.dataset.team:1;
+  return {p:p,h:h};
+}
+var ctaRow=$("ctaRow");
+if(ctaRow){
+  new MutationObserver(function(){
+    if(!ctaRow.children.length||ctaRow.querySelector("[data-money]")) return;
+    var b=document.createElement("button"); b.type="button"; b.className="btn btn-ghost"; b.dataset.money="1"; b.textContent="Convertirlo a dinero con el agente";
+    b.addEventListener("click",function(){openAgent("calc",prefillFromMedicion());});
+    ctaRow.appendChild(b);
+  }).observe(ctaRow,{childList:true});
+}
+})();
+
+</script>
+</body>
+</html>
