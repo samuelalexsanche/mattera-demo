@@ -216,6 +216,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .lead-ok{border:1px solid var(--linea);border-radius:16px;padding:28px;background:rgba(20,50,41,.5)}
 .lead-ok h3{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 10px}
 .lead-ok p{margin:0;color:var(--salvia)}
+.lead-bases{font-size:13px;color:var(--tinta-sec);line-height:1.5;margin:4px 0 0;max-width:56ch}
+.lead-ok .lead-folio{font-family:var(--mono);font-size:clamp(34px,5vw,52px);color:var(--hueso);letter-spacing:.06em;margin:18px 0 10px;line-height:1}
 @media(max-width:700px){.lead-row{grid-template-columns:1fr}}
 .seg{fill:none;stroke:rgba(143,168,156,.18);stroke-width:22;transition:stroke .35s ease}
 .seg.lit{stroke:var(--hueso)}
@@ -741,8 +743,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <section class="meta" id="contacto" aria-labelledby="contactoTitle">
   <div class="wrap lead-wrap">
     <div class="rv">
-      <h2 class="h2" id="contactoTitle">¿Te lo mandamos por escrito?</h2>
-      <p class="lead">Déjanos tus datos y te buscamos con una propuesta concreta para tu negocio. Sin compromiso y sin llamadas automáticas.</p>
+      <h2 class="h2" id="contactoTitle">Llévate tu llavero y tu reporte.</h2>
+      <p class="lead">Dos cosas por dejarnos tus datos: un llavero con la cuenta de tu negocio adentro, grabado aquí mismo, y mañana por WhatsApp el desglose de las horas que mediste, con las tres automatizaciones que más te convienen.</p>
+      <p class="lead" style="margin-top:-8px">Quien se registra entra también al sorteo de una sesión de 90 minutos: salimos con el mapa de tu operación por escrito, qué automatizar y en qué orden.</p>
     </div>
     <form class="lead-form rv" id="leadForm" novalidate>
       <div class="lead-row">
@@ -755,9 +758,15 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <input id="lfTel" name="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="33 1234 5678" required maxlength="25">
         </div>
       </div>
-      <div class="lead-field">
-        <label for="lfGiro">¿A qué se dedica tu negocio?</label>
-        <input id="lfGiro" name="giro" type="text" placeholder="Taller, consultorio, inmobiliaria, tienda…" maxlength="120">
+      <div class="lead-row">
+        <div class="lead-field">
+          <label for="lfGiro">¿A qué se dedica tu negocio?</label>
+          <input id="lfGiro" name="giro" type="text" placeholder="Taller, consultorio, inmobiliaria…" maxlength="120">
+        </div>
+        <div class="lead-field">
+          <label for="lfCuenta">¿Qué grabamos en tu llavero?</label>
+          <input id="lfCuenta" name="cuenta" type="text" placeholder="@tunegocio o tu WhatsApp" maxlength="60">
+        </div>
       </div>
       <div class="lead-field">
         <label for="lfDolor">¿Qué es lo que más tiempo te quita hoy?</label>
@@ -768,9 +777,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <span>Soy mayor de edad y acepto que Mattera Systems me contacte sobre mi negocio. Puedo pedir que borren mis datos cuando quiera. <a href="https://matterasystems.com/privacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>.</span>
       </label>
       <div>
-        <button class="btn btn-primary" type="submit" id="lfBtn">Quiero que me contacten</button>
+        <button class="btn btn-primary" type="submit" id="lfBtn">Quiero mi llavero y mi reporte</button>
       </div>
       <p class="lead-msg" id="lfMsg" role="status" aria-live="polite"></p>
+      <p class="lead-bases">Sorteo: participan quienes se registren durante Connect Zapopan, el 6 y 7 de octubre de 2026. Se elige un ganador al azar el 9 de octubre y se le avisa por WhatsApp al número que dejó. La sesión es de consultoría y no incluye implementación.</p>
     </form>
   </div>
 </section>
@@ -1194,8 +1204,11 @@ calcBtn.addEventListener("click", function(){
 
   if(state.perfil==="negocio"){
     var tm = team===1 ? "solo yo" : team+" personas";
-    mk("Agendar mi diagnóstico", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+" (equipo: "+tm+"). Quiero agendar mi diagnóstico de 30 minutos y participar en el sorteo de implementación.", WA), "btn-primary");
-    legal.textContent = "Al escribirnos por WhatsApp aceptas que Mattera Systems te contacte sobre tu diagnóstico. Participas en el sorteo de un agente de WhatsApp implementado sin costo de instalación, exclusivo para negocios.";
+    mk("Agendar mi diagnóstico", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+" (equipo: "+tm+"). Quiero agendar mi diagnóstico de 30 minutos.", WA), "btn-primary");
+    // Mismo destino que el formulario de abajo: es donde se recoge el llavero.
+    var irForm=document.createElement("a"); irForm.className="btn btn-ghost";
+    irForm.textContent="Llévate tu llavero"; irForm.href="#contacto"; row.appendChild(irForm);
+    legal.textContent = "Al escribirnos por WhatsApp aceptas que Mattera Systems te contacte sobre tu diagnóstico. Si dejas tus datos aquí abajo te grabamos un llavero con la cuenta de tu negocio, te mandamos tu reporte de horas y entras al sorteo de la sesión de 90 minutos.";
   } else if(state.perfil==="trabajo"){
     mk("Enviárselo a quien decide", waLink("Medí cuántas horas se van en trabajo repetitivo en mi puesto: "+resumen+". Mattera Systems automatiza esto con IA en 14 días. Diagnóstico de 30 minutos: wa.me/"+WA), "btn-primary");
     mk("Escribir a Mattera", waLink("Hola, Mattera. Medí mis horas en Connect Zapopan: "+resumen+". Me interesa llevar esto a la empresa donde trabajo.", WA), "btn-ghost");
@@ -2228,11 +2241,14 @@ async function agSend(text){
     try{
       var r=await fetch(LEADS,{method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({nombre:nombre,telefono:tel,giro:$("lfGiro").value.trim(),
-          dolor:$("lfDolor").value.trim(),horas_anio:med.horas,personas:med.personas,origen:"expo"})});
+          cuenta:$("lfCuenta").value.trim(),dolor:$("lfDolor").value.trim(),
+          horas_anio:med.horas,personas:med.personas,origen:"expo"})});
       var d=await r.json().catch(function(){return {};});
       if(!r.ok) throw new Error(d.error||"No se pudo guardar.");
       form.innerHTML='<div class="lead-ok"><h3>Listo, '+esc(nombre.split(" ")[0])+'.</h3>'+
-        '<p>Te buscamos por WhatsApp con una propuesta para tu negocio. Si quieres adelantarte, escríbenos al +52 33 2787 4747.</p></div>';
+        (d.folio?'<p>Enseña este folio en el stand y te grabamos el llavero:</p>'+
+          '<p class="lead-folio">'+esc(d.folio)+'</p>':'')+
+        '<p>Mañana te mandamos tu reporte de horas por WhatsApp. Si quieres adelantarte, escríbenos al +52 33 2787 4747.</p></div>';
     }catch(err){
       msg.className="lead-msg err";
       msg.textContent="No se pudo enviar. Escríbenos por WhatsApp al +52 33 2787 4747 y lo resolvemos.";
