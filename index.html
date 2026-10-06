@@ -46,6 +46,12 @@ a{color:inherit}
 .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
   padding:calc(env(safe-area-inset-top,0px) + 16px) var(--pad) 16px;transition:background .4s ease}
 .nav.solid{background:rgba(12,33,27,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+/* El desenfoque de una barra fija se recalcula en cada cuadro del scroll y es
+   de lo más caro en un teléfono. Ahí se usa fondo sólido, que se ve igual. */
+@media (max-width:760px){
+  .nav.solid{background:#0C211B;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .ag-fab{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand svg{width:34px;height:26px;color:var(--hueso)}
 .brand span{font-family:var(--serif);font-size:19px;letter-spacing:.01em}
@@ -852,16 +858,23 @@ var introStart = performance.now(), lastT = performance.now();
 
 function rand(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);}
 
+// En un teléfono el scroll compite con el render del hero. La escena es
+// ligera (2 draw calls, ~2000 triángulos): lo caro es rellenar píxeles y
+// rehacer el mapa de sombras cada cuadro, porque los cubos se mueven. Por eso
+// en móvil se baja la resolución del mapa, se usa el filtro barato y se quita
+// el antialias, que a esa densidad de pantalla no se nota.
+var MOVIL = window.matchMedia && window.matchMedia("(max-width:760px),(pointer:coarse)").matches;
+
 function buildScene(){
   if(!window.THREE) return false;
   var canvas = document.getElementById("scene");
   try{
-    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, powerPreference:"high-performance"});
+    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:!MOVIL, powerPreference:"high-performance"});
   }catch(e){return false;}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, MOVIL ? 1.5 : 2));
   renderer.setClearColor(0x0C211B,1);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = MOVIL ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
   scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x0C211B, 18, 46);
   camera = new THREE.PerspectiveCamera(38, 1, .1, 200);
@@ -869,7 +882,7 @@ function buildScene(){
   var hemi = new THREE.HemisphereLight(0xF2EFE6, 0x0C211B, .55); scene.add(hemi);
   var key = new THREE.DirectionalLight(0xFFF6E6, 1.05);
   key.position.set(-12, 22, 10); key.castShadow = true;
-  key.shadow.mapSize.set(2048,2048);
+  key.shadow.mapSize.set(MOVIL ? 1024 : 2048, MOVIL ? 1024 : 2048);
   var sc = key.shadow.camera; sc.left=-22; sc.right=22; sc.top=22; sc.bottom=-22; sc.near=1; sc.far=70;
   key.shadow.bias = -0.0005;
   scene.add(key);
@@ -1007,15 +1020,23 @@ var sheets = document.querySelectorAll(".sheet");
 var meta = document.getElementById("meta");
 function updateParallax(){
   var vh = window.innerHeight;
-  for(var i=0;i<pars.length;i++){
-    var el = pars[i], r = el.parentElement.getBoundingClientRect();
-    var off = (r.top + r.height/2 - vh/2);
-    el.style.transform = "translate3d("+(off*parseFloat(el.dataset.speed))+"px,"+(off*parseFloat(el.dataset.speed)*-.25)+"px,0)";
+  // Primero se mide todo y después se escribe: intercalar lecturas de
+  // geometría con cambios de estilo obliga al navegador a recalcular el
+  // layout varias veces por cuadro, y en un teléfono eso se siente.
+  var i, d, offs = [], ders = [];
+  for(i=0;i<pars.length;i++){
+    var r = pars[i].parentElement.getBoundingClientRect();
+    offs.push(r.top + r.height/2 - vh/2);
   }
-  for(var d=0;d<drifts.length;d++){
-    var h = drifts[d], rr = h.getBoundingClientRect();
-    var o = (rr.top - vh/2)/vh;
-    h.style.transform = "translate3d("+(o*parseFloat(h.dataset.drift)*-3)+"px,0,0)";
+  for(d=0;d<drifts.length;d++){
+    ders.push((drifts[d].getBoundingClientRect().top - vh/2)/vh);
+  }
+  for(i=0;i<pars.length;i++){
+    var sp = parseFloat(pars[i].dataset.speed);
+    pars[i].style.transform = "translate3d("+(offs[i]*sp)+"px,"+(offs[i]*sp*-.25)+"px,0)";
+  }
+  for(d=0;d<drifts.length;d++){
+    drifts[d].style.transform = "translate3d("+(ders[d]*parseFloat(drifts[d].dataset.drift)*-3)+"px,0,0)";
   }
   var mr = meta.getBoundingClientRect();
   var mp = clamp(1 - (mr.top + mr.height/2)/ (vh + mr.height/2), 0, 1);
