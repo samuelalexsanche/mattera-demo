@@ -194,6 +194,29 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .dial-item:hover svg{transform:rotateX(0)}
 .dial-item b{display:block;font-family:var(--mono);font-weight:400;font-size:clamp(30px,3.6vw,48px);margin-top:14px}
 .dial-item span{color:var(--salvia);font-size:15px}
+/* El número vive dentro del <b>, así que la regla de arriba se lo comía:
+   hereda el tamaño grande en lugar de los 15px de la etiqueta. */
+.dial-item b span{font-size:inherit;color:inherit}
+
+/* ---------- Contacto ---------- */
+.lead-wrap{max-width:620px}
+.lead-form{display:grid;gap:14px;margin-top:28px}
+.lead-row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.lead-field label{display:block;font-size:13px;color:var(--salvia);margin-bottom:7px}
+.lead-field input,.lead-field textarea{width:100%;font:400 16px/1.4 var(--sans);color:var(--hueso);
+  background:rgba(20,50,41,.6);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;transition:border-color .2s}
+.lead-field input:focus,.lead-field textarea:focus{outline:none;border-color:var(--salvia)}
+.lead-field textarea{resize:vertical;min-height:88px}
+.lead-field input::placeholder,.lead-field textarea::placeholder{color:var(--tinta-sec)}
+.lead-consent{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--salvia);line-height:1.5}
+.lead-consent input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--naranja)}
+.lead-consent a{color:var(--hueso)}
+.lead-msg{font-size:15px;min-height:22px}
+.lead-msg.err{color:var(--naranja)}
+.lead-ok{border:1px solid var(--linea);border-radius:16px;padding:28px;background:rgba(20,50,41,.5)}
+.lead-ok h3{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 10px}
+.lead-ok p{margin:0;color:var(--salvia)}
+@media(max-width:700px){.lead-row{grid-template-columns:1fr}}
 .seg{fill:none;stroke:rgba(143,168,156,.18);stroke-width:22;transition:stroke .35s ease}
 .seg.lit{stroke:var(--hueso)}
 
@@ -711,6 +734,44 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <div class="sheet s2" data-depth="1"><div class="bar" style="width:30%"></div><div class="big" style="width:60%"></div><div class="bar"></div><div class="blk"></div><div class="blk" style="height:50px"></div></div>
       <div class="sheet s3" data-depth="2"><div class="bar" style="width:35%"></div><div class="big"></div><div class="bar"></div><div class="bar" style="width:55%"></div><div class="blk"></div></div>
     </div>
+  </div>
+</section>
+
+<!-- ================= CONTACTO ================= -->
+<section class="meta" id="contacto" aria-labelledby="contactoTitle">
+  <div class="wrap lead-wrap">
+    <div class="rv">
+      <h2 class="h2" id="contactoTitle">¿Te lo mandamos por escrito?</h2>
+      <p class="lead">Déjanos tus datos y te buscamos con una propuesta concreta para tu negocio. Sin compromiso y sin llamadas automáticas.</p>
+    </div>
+    <form class="lead-form rv" id="leadForm" novalidate>
+      <div class="lead-row">
+        <div class="lead-field">
+          <label for="lfNombre">Tu nombre</label>
+          <input id="lfNombre" name="nombre" type="text" autocomplete="name" placeholder="Como te llamamos" required maxlength="80">
+        </div>
+        <div class="lead-field">
+          <label for="lfTel">WhatsApp o teléfono</label>
+          <input id="lfTel" name="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="33 1234 5678" required maxlength="25">
+        </div>
+      </div>
+      <div class="lead-field">
+        <label for="lfGiro">¿A qué se dedica tu negocio?</label>
+        <input id="lfGiro" name="giro" type="text" placeholder="Taller, consultorio, inmobiliaria, tienda…" maxlength="120">
+      </div>
+      <div class="lead-field">
+        <label for="lfDolor">¿Qué es lo que más tiempo te quita hoy?</label>
+        <textarea id="lfDolor" name="dolor" placeholder="Contestar mensajes, dar seguimiento, capturar datos…" maxlength="400"></textarea>
+      </div>
+      <label class="lead-consent">
+        <input type="checkbox" id="lfOk" required>
+        <span>Soy mayor de edad y acepto que Mattera Systems me contacte sobre mi negocio. Puedo pedir que borren mis datos cuando quiera. <a href="https://matterasystems.com/privacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a>.</span>
+      </label>
+      <div>
+        <button class="btn btn-primary" type="submit" id="lfBtn">Quiero que me contacten</button>
+      </div>
+      <p class="lead-msg" id="lfMsg" role="status" aria-live="polite"></p>
+    </form>
   </div>
 </section>
 
@@ -2131,6 +2192,54 @@ async function agSend(text){
   if(hit) return agSay(hit.a);
   agSay("No tengo ese dato aquí. Para eso, lo mejor es escribirnos por WhatsApp al +52 33 2787 4747 y te respondemos directamente. Si quieres, mientras tanto calculamos tu ahorro.");
 }
+
+/* ================= CONTACTO ================= */
+(function(){
+  var LEADS="https://mattera-leads.mattera.workers.dev/lead";
+  var form=$("leadForm"); if(!form) return;
+  var msg=$("lfMsg"), btn=$("lfBtn"), enviando=false;
+
+  // Si ya midió sus horas, el dato viaja con el contacto: sirve para saber
+  // con qué se le buscó. No se recoge nada que la persona no haya escrito.
+  function medicion(){
+    var res=$("result"), out={horas:null,personas:null};
+    if(!res||!res.classList.contains("on")) return out;
+    var n=($("rNum")||{}).textContent||"";
+    var m=n.replace(/,/g,"").match(/\d+/);
+    if(m) out.horas=parseInt(m[0],10);
+    var team=document.querySelector('[data-team][aria-pressed="true"]');
+    var perfil=document.querySelector('[data-perfil][aria-pressed="true"]');
+    out.personas=(perfil&&perfil.dataset.perfil==="negocio"&&team)?+team.dataset.team:1;
+    return out;
+  }
+
+  form.addEventListener("submit",async function(e){
+    e.preventDefault();
+    if(enviando) return;
+    msg.className="lead-msg";
+    var nombre=$("lfNombre").value.trim();
+    var tel=$("lfTel").value.trim();
+    if(!nombre){ msg.className="lead-msg err"; msg.textContent="Falta tu nombre."; $("lfNombre").focus(); return; }
+    if(tel.replace(/\D/g,"").length<10){ msg.className="lead-msg err"; msg.textContent="El teléfono necesita 10 dígitos."; $("lfTel").focus(); return; }
+    if(!$("lfOk").checked){ msg.className="lead-msg err"; msg.textContent="Marca la casilla para que podamos contactarte."; return; }
+
+    enviando=true; btn.disabled=true; btn.textContent="Enviando…"; msg.textContent="";
+    var med=medicion();
+    try{
+      var r=await fetch(LEADS,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({nombre:nombre,telefono:tel,giro:$("lfGiro").value.trim(),
+          dolor:$("lfDolor").value.trim(),horas_anio:med.horas,personas:med.personas,origen:"expo"})});
+      var d=await r.json().catch(function(){return {};});
+      if(!r.ok) throw new Error(d.error||"No se pudo guardar.");
+      form.innerHTML='<div class="lead-ok"><h3>Listo, '+esc(nombre.split(" ")[0])+'.</h3>'+
+        '<p>Te buscamos por WhatsApp con una propuesta para tu negocio. Si quieres adelantarte, escríbenos al +52 33 2787 4747.</p></div>';
+    }catch(err){
+      msg.className="lead-msg err";
+      msg.textContent="No se pudo enviar. Escríbenos por WhatsApp al +52 33 2787 4747 y lo resolvemos.";
+      enviando=false; btn.disabled=false; btn.textContent="Quiero que me contacten";
+    }
+  });
+})();
 
 /* ----- conexión con la medición de horas de la página ----- */
 function prefillFromMedicion(){
