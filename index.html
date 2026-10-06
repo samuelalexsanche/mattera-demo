@@ -217,6 +217,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .lead-ok h3{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 10px}
 .lead-ok p{margin:0;color:var(--salvia)}
 .lead-bases{font-size:13px;color:var(--tinta-sec);line-height:1.5;margin:4px 0 0;max-width:56ch}
+.lead-premios{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:14px}
+.lead-premios li{position:relative;padding-left:26px;color:var(--salvia);line-height:1.5}
+.lead-premios li b{color:var(--hueso);font-weight:600}
+.lead-premios li::before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;
+  border-radius:50%;background:var(--salvia)}
+/* Mientras se llena el formulario, el botón del agente se quita de encima:
+   en móvil queda justo sobre el campo del teléfono. */
+body.en-contacto .ag-fab{opacity:0;transform:translateY(10px);pointer-events:none}
 .lead-ok .lead-folio{font-family:var(--mono);font-size:clamp(34px,5vw,52px);color:var(--hueso);letter-spacing:.06em;margin:18px 0 10px;line-height:1}
 @media(max-width:700px){.lead-row{grid-template-columns:1fr}}
 .seg{fill:none;stroke:rgba(143,168,156,.18);stroke-width:22;transition:stroke .35s ease}
@@ -744,8 +752,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="wrap lead-wrap">
     <div class="rv">
       <h2 class="h2" id="contactoTitle">Llévate tu llavero y tu reporte.</h2>
-      <p class="lead">Dos cosas por dejarnos tus datos: un llavero con la cuenta de tu negocio adentro, grabado aquí mismo, y mañana por WhatsApp el desglose de las horas que mediste, con las tres automatizaciones que más te convienen.</p>
-      <p class="lead" style="margin-top:-8px">Quien se registra entra también al sorteo de una sesión de 90 minutos: salimos con el mapa de tu operación por escrito, qué automatizar y en qué orden.</p>
+      <p class="lead">Tres cosas por dejarnos tus datos:</p>
+      <ul class="lead-premios">
+        <li><b>Un llavero</b> con la cuenta de tu negocio adentro, grabado aquí mismo.</li>
+        <li><b>Tu reporte de horas</b> mañana por WhatsApp, con las tres automatizaciones que más te convienen.</li>
+        <li><b>Entras al sorteo</b> de una sesión de 90 minutos: sales con el mapa de tu operación por escrito.</li>
+      </ul>
     </div>
     <form class="lead-form rv" id="leadForm" novalidate>
       <div class="lead-row">
@@ -2207,6 +2219,19 @@ async function agSend(text){
 }
 
 /* ================= CONTACTO ================= */
+(function(){
+  var sec=document.getElementById("contacto");
+  if(!sec) return;
+  // Se mide en cada scroll en lugar de con IntersectionObserver: la sección es
+  // más alta que la pantalla y el observer no reaccionaba de forma fiable.
+  function revisa(){
+    var r=sec.getBoundingClientRect();
+    document.body.classList.toggle("en-contacto", r.top < window.innerHeight*0.92 && r.bottom > window.innerHeight*0.08);
+  }
+  addEventListener("scroll",revisa,{passive:true});
+  addEventListener("resize",revisa);
+  revisa();
+})();
 (function(){
   var LEADS="https://mattera-leads.mattera.workers.dev/lead";
   var form=$("leadForm"); if(!form) return;
