@@ -1988,8 +1988,12 @@ async function agSay(text,chipList){
 var MAIN_CHIPS=["Calcular mi ahorro","¿Cuánto cuesta?","¿Cuánto tardan?","¿Qué hacen exactamente?","¿Hay contrato?"];
 function openAgent(mode,prefill){
   panel.hidden=false; fab.hidden=true; fab.setAttribute("aria-expanded","true");
+  var yaHabiaSaludado=greeted;
   if(!greeted){ greeted=true; agSay("Hola. Soy el agente de Mattera. Puedo calcular cuánto tiempo y dinero le ahorraría un sistema a tu negocio, o resolver tus dudas sobre servicios, precios y tiempos."); }
-  if(mode==="calc") setTimeout(function(){startCalc(prefill);},greeted?50:1300);
+  // Hay que leer el valor ANTES de marcarlo: si no, la condición siempre daba
+  // 50 ms y la primera pregunta se adelantaba al saludo, que tarda más en
+  // escribirse por ser más largo.
+  if(mode==="calc") setTimeout(function(){startCalc(prefill);},yaHabiaSaludado?50:1800);
   setTimeout(function(){$("agIn").focus({preventScroll:true});},350);
 }
 function closeAgent(){panel.hidden=true;fab.hidden=false;fab.setAttribute("aria-expanded","false");fab.focus();}
@@ -2027,8 +2031,13 @@ function calcInput(text){
   } else if(calc.step==="sueldo"){
     if(/referencia|no se|minimo/.test(t)) n=10000;
     if(!n) return agSay("¿Cuánto gana al mes cada persona, aproximadamente? Por ejemplo, 12000.",["$10,000 (referencia)","$15,000"]);
-    if(n<1000) n=n*1000;
-    calc.s=n;
+    // El sueldo puede venir por semana, quincena o día: se lleva a mensual
+    // antes de calcular, igual que se hace arriba con las horas.
+    if(/semanal|a la semana|por semana|cada semana/.test(t)) n=n*4.33;
+    else if(/quincen/.test(t)) n=n*2;
+    else if(/diari|al dia|por dia|cada dia/.test(t)) n=n*21.7;
+    else if(n<1000) n=n*1000;
+    calc.s=Math.round(n);
   }
   nextCalc();
 }
